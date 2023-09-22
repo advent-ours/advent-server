@@ -3,10 +3,12 @@ package com.adventours.calendar.member.service;
 import com.adventours.calendar.member.domain.Member;
 import com.adventours.calendar.member.domain.OAuthProvider;
 import com.adventours.calendar.member.persistence.MemberRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Optional;
 
+@Service
 public class MemberService {
     private final Map<OAuthProvider, OAuthRequestPort> oAuthRequestPortMap;
     private final MemberRepository memberRepository;
