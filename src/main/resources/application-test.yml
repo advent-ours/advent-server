@@ -6,3 +6,7 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
+logging:
+  level:
+    p6spy: info
