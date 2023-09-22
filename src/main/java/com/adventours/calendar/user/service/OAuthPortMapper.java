@@ -1,6 +1,6 @@
-package com.adventours.calendar.member.service;
+package com.adventours.calendar.user.service;
 
-import com.adventours.calendar.member.domain.OAuthProvider;
+import com.adventours.calendar.user.domain.OAuthProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -1,8 +1,8 @@
-package com.adventours.calendar.member.service;
+package com.adventours.calendar.user.service;
 
-import com.adventours.calendar.member.domain.Member;
-import com.adventours.calendar.member.domain.OAuthProvider;
-import com.adventours.calendar.member.persistence.MemberRepository;
+import com.adventours.calendar.user.domain.OAuthProvider;
+import com.adventours.calendar.user.domain.User;
+import com.adventours.calendar.user.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,23 +11,23 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class UserService {
     private final Map<OAuthProvider, OAuthRequestPort> oAuthRequestPortMap;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     public LoginResponse login(final OAuthProvider provider, final LoginRequest request) {
         OAuthRequestPort oAuthRequestPort = getProperProviderPort(provider);
         OAuthProviderInformation userInformation = oAuthRequestPort.requestUserInformation(request.token());
-        Optional<Member> optionalMember = memberRepository.findByProviderAndProviderId(provider, userInformation.getProviderId());
-        if (optionalMember.isPresent()) {
-            return new LoginResponse(optionalMember.get().getId(), false);
+        Optional<User> optionalUser = userRepository.findByProviderAndProviderId(provider, userInformation.getProviderId());
+        if (optionalUser.isPresent()) {
+            return new LoginResponse(optionalUser.get().getId(), false);
         } else {
-            final Member member = memberRepository.save(new Member(
+            final User user = userRepository.save(new User(
                     provider,
                     userInformation.getProviderId(),
                     userInformation.getInitialProfileImage()
             ));
-            return new LoginResponse(member.getId(), true);
+            return new LoginResponse(user.getId(), true);
         }
     }
 

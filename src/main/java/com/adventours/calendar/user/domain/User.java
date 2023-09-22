@@ -1,4 +1,4 @@
-package com.adventours.calendar.member.domain;
+package com.adventours.calendar.user.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,11 +13,11 @@ import lombok.Getter;
 @Getter
 @Entity
 @Table(name = "USERS")
-public class Member {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "MEMBER_ID")
+    @Column(name = "USER_ID")
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -29,9 +29,12 @@ public class Member {
 
     private String profileImgUrl;
 
-    public Member(final OAuthProvider provider, final String providerId, final String profileImgUrl) {
+    public User(final OAuthProvider provider, final String providerId, final String profileImgUrl) {
         this.provider = provider;
         this.providerId = providerId;
         this.profileImgUrl = profileImgUrl;
+    }
+
+    public User() {
     }
 }

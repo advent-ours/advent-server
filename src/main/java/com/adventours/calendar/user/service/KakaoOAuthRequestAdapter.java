@@ -1,7 +1,7 @@
-package com.adventours.calendar.member.service;
+package com.adventours.calendar.user.service;
 
-import com.adventours.calendar.member.client.KakaoOAuthFeignClient;
-import com.adventours.calendar.member.domain.OAuthProvider;
+import com.adventours.calendar.user.client.KakaoOAuthFeignClient;
+import com.adventours.calendar.user.domain.OAuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

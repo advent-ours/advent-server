@@ -1,11 +1,11 @@
-package com.adventours.calendar.member;
+package com.adventours.calendar.user;
 
-import com.adventours.calendar.member.client.KakaoOAuthFeignClient;
-import com.adventours.calendar.member.domain.OAuthProvider;
-import com.adventours.calendar.member.service.KakaoUserInformation;
-import com.adventours.calendar.member.service.LoginRequest;
-import com.adventours.calendar.member.service.LoginResponse;
-import com.adventours.calendar.member.service.MemberService;
+import com.adventours.calendar.user.client.KakaoOAuthFeignClient;
+import com.adventours.calendar.user.domain.OAuthProvider;
+import com.adventours.calendar.user.service.KakaoUserInformation;
+import com.adventours.calendar.user.service.LoginRequest;
+import com.adventours.calendar.user.service.LoginResponse;
+import com.adventours.calendar.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class MemberControllerTest {
+class UserControllerTest {
 
     @Autowired
-    MemberService memberService;
+    UserService userService;
 
     @MockBean
     KakaoOAuthFeignClient kakaoInformationFeignClient;
@@ -42,8 +42,8 @@ class MemberControllerTest {
                 "kakaoAccount"
         ));
 
-        final LoginResponse response = memberService.login(provider, request);
-        assertThat(response.isNewMember()).isTrue();
+        final LoginResponse response = userService.login(provider, request);
+        assertThat(response.isNewUser()).isTrue();
     }
 
 }

@@ -1,6 +1,6 @@
-package com.adventours.calendar.member.service;
+package com.adventours.calendar.user.service;
 
-import com.adventours.calendar.member.domain.OAuthProvider;
+import com.adventours.calendar.user.domain.OAuthProvider;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

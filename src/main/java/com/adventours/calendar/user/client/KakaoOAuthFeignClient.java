@@ -1,6 +1,6 @@
-package com.adventours.calendar.member.client;
+package com.adventours.calendar.user.client;
 
-import com.adventours.calendar.member.service.KakaoUserInformation;
+import com.adventours.calendar.user.service.KakaoUserInformation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
