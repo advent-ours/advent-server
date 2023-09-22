@@ -21,10 +21,17 @@ public class Member {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private OAuthProvider provider;
 
-    @Column(nullable = true, unique = true)
+    @Column(nullable = false)
     private String providerId;
 
     private String profileImgUrl;
+
+    public Member(final OAuthProvider provider, final String providerId, final String profileImgUrl) {
+        this.provider = provider;
+        this.providerId = providerId;
+        this.profileImgUrl = profileImgUrl;
+    }
 }

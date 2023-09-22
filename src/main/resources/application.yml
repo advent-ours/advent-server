@@ -9,3 +9,9 @@ spring:
     hibernate:
       ddl-auto: create
     open-in-view: false
+
+oauth:
+  kakao:
+    auth_url: https://kapi.kakao.com/v2/user/me
+  apple:
+    auth-uri: https://appleid.apple.com/auth/keys
