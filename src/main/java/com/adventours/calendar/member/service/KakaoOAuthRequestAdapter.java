@@ -1,4 +1,4 @@
-package com.adventours.calendar;
+package com.adventours.calendar.member.service;
 
 public class KakaoOAuthRequestAdapter implements OAuthRequestPort {
     @Override

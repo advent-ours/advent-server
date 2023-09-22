@@ -1,5 +1,9 @@
-package com.adventours.calendar;
+package com.adventours.calendar.member;
 
+import com.adventours.calendar.member.domain.OAuthProvider;
+import com.adventours.calendar.member.service.LoginRequest;
+import com.adventours.calendar.member.service.LoginResponse;
+import com.adventours.calendar.member.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +20,7 @@ class MemberControllerTest {
         final String token = "loginToken";
         final LoginRequest request = new LoginRequest(token);
         final LoginResponse response = memberService.login(provider, request);
-        assertThat(response.isNewMember).isTrue();
+        assertThat(response.isNewMember()).isTrue();
     }
 
 }

@@ -1,9 +1,13 @@
-package com.adventours.calendar;
+package com.adventours.calendar.member.service;
+
+import com.adventours.calendar.member.domain.Member;
+import com.adventours.calendar.member.domain.OAuthProvider;
+import com.adventours.calendar.member.persistence.MemberRepository;
 
 import java.util.Map;
 import java.util.Optional;
 
-class MemberService {
+public class MemberService {
     private final Map<OAuthProvider, OAuthRequestPort> oAuthRequestPortMap;
     private final MemberRepository memberRepository;
 
