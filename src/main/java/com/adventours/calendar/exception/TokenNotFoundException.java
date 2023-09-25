@@ -6,7 +6,7 @@ import com.adventours.calendar.exception.ResCode;
 public class TokenNotFoundException extends BaseException {
 
     public TokenNotFoundException() {
-        super(ResCode.CAL100);
+        super(ResCode.CAL200);
     }
 
 }

@@ -1,7 +1,9 @@
 package com.adventours.calendar.exception;
 
-public abstract class BaseException extends RuntimeException {
+import lombok.Getter;
 
+@Getter
+public abstract class BaseException extends RuntimeException {
     private final ResCode resCode;
     private final String message;
 
