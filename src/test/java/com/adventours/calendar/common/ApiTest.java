@@ -1,5 +1,9 @@
 package com.adventours.calendar.common;
 
+import com.adventours.calendar.auth.JwtTokenIssuer;
+import com.adventours.calendar.user.domain.OAuthProvider;
+import com.adventours.calendar.user.domain.User;
+import com.adventours.calendar.user.persistence.UserRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +13,14 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ApiTest {
     @LocalServerPort
-    private int port;
+    int port;
     @Autowired
-    private DatabaseCleaner databaseCleaner;
+    DatabaseCleaner databaseCleaner;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    JwtTokenIssuer jwtTokenIssuer;
+    protected static String accessToken;
 
     @BeforeEach
     void setUp() {
@@ -20,5 +29,7 @@ public class ApiTest {
             databaseCleaner.afterPropertiesSet();
         }
         databaseCleaner.execute();
+        userRepository.save(new User(OAuthProvider.KAKAO, "providerId", "profileImage"));
+        accessToken = jwtTokenIssuer.issueToken(1L).accessToken();
     }
 }

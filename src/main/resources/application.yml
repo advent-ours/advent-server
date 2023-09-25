@@ -15,3 +15,8 @@ oauth:
     auth_url: https://kapi.kakao.com/v2/user/me
   apple:
     auth-uri: https://appleid.apple.com/auth/keys
+
+jwt:
+  access-token:
+    expire-length: 3600000
+    secret: secretsecretsecretsecretsecretsecretsecretsecretsecretsecret

@@ -28,7 +28,7 @@ class UserControllerTest extends ApiTest {
     UserRepository userRepository;
 
     @Test
-    @DisplayName("카카오 로그인 성공")
+    @DisplayName("카카오 회원가입(로그인) 성공")
     void login_kakao() {
         //given
         final OAuthProvider provider = OAuthProvider.KAKAO;
@@ -54,6 +54,20 @@ class UserControllerTest extends ApiTest {
 
         //then
         assertThat(userRepository.findByProviderAndProviderId(provider, "providerId")).isPresent();
+    }
+
+    @Test
+    @DisplayName("토큰 테스트")
+    void test() {
+        //when
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .when()
+                .header("Authorization", accessToken)
+                .get("/")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
+
     }
 
 }
