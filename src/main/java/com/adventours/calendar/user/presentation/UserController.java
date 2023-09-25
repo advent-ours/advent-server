@@ -1,5 +1,7 @@
 package com.adventours.calendar.user.presentation;
 
+import com.adventours.calendar.auth.JwtTokenDto;
+import com.adventours.calendar.auth.JwtTokenIssuer;
 import com.adventours.calendar.user.domain.OAuthProvider;
 import com.adventours.calendar.user.service.LoginRequest;
 import com.adventours.calendar.user.service.LoginResponse;
@@ -17,9 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+    private final JwtTokenIssuer tokenIssuer;
+
     @PostMapping("/login/oauth/{provider}")
     public ResponseEntity<LoginResponse> login(@PathVariable final String provider, final LoginRequest request) {
         final LoginResponse response = userService.login(OAuthProvider.valueOf(provider), request);
+        final JwtTokenDto jwtTokenDto = tokenIssuer.issueToken(response.getUserId());
+        response.issueToken(jwtTokenDto);
         return ResponseEntity.ok(response);
     }
 }
