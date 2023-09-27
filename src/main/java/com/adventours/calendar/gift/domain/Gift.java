@@ -33,6 +33,4 @@ public class Gift {
     private String contentUrl;
 
     private String body;
-
-    // 생성자, getter 및 setter 메서드
 }
