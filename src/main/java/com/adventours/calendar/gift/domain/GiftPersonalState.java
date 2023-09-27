@@ -14,7 +14,7 @@ import org.hibernate.type.TrueFalseConverter;
 public class GiftPersonalState {
 
     @EmbeddedId
-    GiftPersonalStatePk giftPersonalStatePk;
+    private GiftPersonalStatePk giftPersonalStatePk;
 
     @Column(nullable = false, columnDefinition = "CHAR(1) DEFAULT 'N'")
     @Convert(converter = TrueFalseConverter.class)
