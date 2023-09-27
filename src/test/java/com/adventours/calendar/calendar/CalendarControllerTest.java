@@ -1,23 +1,26 @@
 package com.adventours.calendar.calendar;
 
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
+import com.adventours.calendar.calendar.service.CalendarService;
+import com.adventours.calendar.calendar.service.CreateCalendarRequest;
 import com.adventours.calendar.common.ApiTest;
 import com.adventours.calendar.gift.persistence.GiftRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CalendarControllerTest extends ApiTest {
 
-    private CalendarService calendarService;
-    private CalendarRepository calendarRepository;
-    private GiftRepository giftRepository;
+    @Autowired CalendarService calendarService;
+    @Autowired CalendarRepository calendarRepository;
+    @Autowired GiftRepository giftRepository;
 
     @Test
     void createCalendar() {
         final Long userId = 1L;
-        final CreateCalendarRequest request;
+        final CreateCalendarRequest request = new CreateCalendarRequest("제목");
         calendarService.createCalendar(userId, request);
 
         Assertions.assertAll(
@@ -26,6 +29,4 @@ class CalendarControllerTest extends ApiTest {
         );
     }
 
-    private class CalendarService {
-    }
 }

@@ -32,9 +32,19 @@ public class Gift {
 
     //TODO: Enum으로 제공
     @Column(nullable = false)
-    private String contentType;
+    private GiftType giftType;
 
     private String contentUrl;
 
     private String body;
+
+    public Gift(final Calendar calendar, final int days, final GiftType giftType) {
+        this.calendar = calendar;
+        this.days = days;
+        this.giftType = giftType;
+    }
+
+    public static Gift initOf(final Calendar calendar, final int days) {
+        return new Gift(calendar, days, GiftType.INIT);
+    }
 }
