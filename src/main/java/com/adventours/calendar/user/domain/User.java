@@ -27,12 +27,20 @@ public class User {
     @Column(nullable = false)
     private String providerId;
 
+    //TODO 기본 닉네임 부여하기 + nullable false 적용
+//    @Column(unique = true, nullable = false)
+    private String nickname;
+
     private String profileImgUrl;
 
     public User(final OAuthProvider provider, final String providerId, final String profileImgUrl) {
         this.provider = provider;
         this.providerId = providerId;
         this.profileImgUrl = profileImgUrl;
+    }
+
+    public void updateNickname(final String nickname) {
+        this.nickname = nickname;
     }
 
     public User() {
