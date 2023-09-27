@@ -2,6 +2,7 @@ package com.adventours.calendar.calendar.service;
 
 import com.adventours.calendar.calendar.domain.Calendar;
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
+import com.adventours.calendar.exception.AlreadyExistCalendarException;
 import com.adventours.calendar.gift.domain.Gift;
 import com.adventours.calendar.gift.persistence.GiftRepository;
 import com.adventours.calendar.user.domain.User;
@@ -41,7 +42,7 @@ public class CalendarService {
         try {
             calendar = calendarRepository.save(new Calendar(user, request.title()));
         } catch (DataIntegrityViolationException e) {
-            throw new IllegalArgumentException("이미 캘린더가 존재합니다.");
+            throw new AlreadyExistCalendarException();
         }
         return calendar;
     }
