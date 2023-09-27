@@ -28,7 +28,7 @@ public class User {
     private String providerId;
 
     //TODO 기본 닉네임 부여하기 + nullable false 적용
-    @Column(unique = true)
+//    @Column(unique = true, nullable = false)
     private String nickname;
 
     private String profileImgUrl;

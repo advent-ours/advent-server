@@ -28,7 +28,7 @@ public class Gift {
     private Calendar calendar;
 
     @Column(nullable = false)
-    private int day;
+    private int days;
 
     //TODO: Enum으로 제공
     @Column(nullable = false)
