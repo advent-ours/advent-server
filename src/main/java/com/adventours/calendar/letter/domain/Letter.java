@@ -3,7 +3,9 @@ package com.adventours.calendar.letter.domain;
 import com.adventours.calendar.calendar.domain.Calendar;
 import com.adventours.calendar.user.domain.User;
 import jakarta.persistence.Column;
+import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,15 +19,16 @@ import lombok.Getter;
 @Table(name = "LETTER")
 public class Letter {
     @Id
+    @Column(name = "LETTER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long letterId;
 
     @ManyToOne
-    @JoinColumn(name = "calendarId", nullable = false)
+    @JoinColumn(name = "CALENDAR_ID", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Calendar calendar;
 
     @ManyToOne
-    @JoinColumn(name = "fromUserId", nullable = false)
+    @JoinColumn(name = "FROM_USER_ID", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User fromUser;
 
     @Column(nullable = false)

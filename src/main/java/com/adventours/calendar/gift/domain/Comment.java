@@ -18,15 +18,16 @@ import lombok.Getter;
 @Table(name = "COMMENT")
 public class Comment {
     @Id
+    @Column(name = "COMMENT_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
     @ManyToOne
-    @JoinColumn(name = "gift_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "GIFT_ID", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Gift gift;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "USER_ID", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 
     @Column(nullable = false)
