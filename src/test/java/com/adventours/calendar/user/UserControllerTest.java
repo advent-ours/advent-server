@@ -8,14 +8,18 @@ import com.adventours.calendar.user.service.KakaoUserInformation;
 import com.adventours.calendar.user.service.LoginRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 class UserControllerTest extends ApiTest {
@@ -24,6 +28,11 @@ class UserControllerTest extends ApiTest {
     KakaoOAuthFeignClient kakaoInformationFeignClient;
     @Autowired
     UserRepository userRepository;
+
+    @BeforeEach
+    void resetBean() {
+        reset(kakaoInformationFeignClient);
+    }
 
     @Test
     @DisplayName("카카오 회원가입(로그인) 성공")
