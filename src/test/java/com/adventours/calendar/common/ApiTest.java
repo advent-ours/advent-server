@@ -22,7 +22,7 @@ public class ApiTest {
     UserRepository userRepository;
     @Autowired
     JwtTokenIssuer jwtTokenIssuer;
-    protected static String accessToken;
+    public static String accessToken;
 
     @BeforeEach
     void setUp() {
