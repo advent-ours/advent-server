@@ -5,6 +5,7 @@ import com.adventours.calendar.common.ApiTest;
 import com.adventours.calendar.common.Scenario;
 import com.adventours.calendar.gift.persistence.GiftRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +17,7 @@ class CalendarControllerTest extends ApiTest {
     @Autowired GiftRepository giftRepository;
 
     @Test
+    @DisplayName("캘린더 생성 성공")
     void request() {
         Scenario.createCalendar().request();
         Assertions.assertAll(
