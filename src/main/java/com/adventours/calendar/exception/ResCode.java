@@ -11,7 +11,10 @@ public enum ResCode {
     CAL301("토큰이 만료되었습니다.", HttpStatus.UNAUTHORIZED),
     //400~499: 유저 예외
     CAL400("존재하지 않는 유저입니다.", HttpStatus.BAD_REQUEST),
-    CAL500("서버 내부 에러입니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+    CAL500("서버 내부 에러입니다.", HttpStatus.INTERNAL_SERVER_ERROR),
+    //600~699: 캘린더 예외
+    Cal600("존재하지 않는 캘린더입니다.", HttpStatus.NOT_FOUND),
+    Cal601("이미 존재하는 캘린더입니다.", HttpStatus.BAD_REQUEST);
     private final String message;
     private final HttpStatus httpStatus;
 
