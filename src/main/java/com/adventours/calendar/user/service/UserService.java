@@ -5,6 +5,7 @@ import com.adventours.calendar.user.domain.User;
 import com.adventours.calendar.user.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.Optional;
@@ -33,5 +34,11 @@ public class UserService {
 
     private OAuthRequestPort getProperProviderPort(final OAuthProvider provider) {
         return oAuthRequestPortMap.get(provider);
+    }
+
+    @Transactional
+    public void updateNickname(final Long userId, final UpdateNicknameRequest request) {
+        final User user = userRepository.findById(userId).orElseThrow();
+        user.updateNickname(request.nickname());
     }
 }
