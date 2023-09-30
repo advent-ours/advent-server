@@ -6,6 +6,8 @@ import com.adventours.calendar.user.domain.OAuthProvider;
 import com.adventours.calendar.user.persistence.UserRepository;
 import com.adventours.calendar.user.service.KakaoUserInformation;
 import com.adventours.calendar.user.service.LoginRequest;
+import com.adventours.calendar.user.service.UpdateNicknameRequest;
+import com.adventours.calendar.user.service.UserService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Disabled;
@@ -25,6 +27,8 @@ class UserControllerTest extends ApiTest {
     KakaoOAuthFeignClient kakaoInformationFeignClient;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserService userService;
 
     //TODO: MockBean 초기화 현상 해결 필요.
     @Test
@@ -71,4 +75,13 @@ class UserControllerTest extends ApiTest {
 
     }
 
+    @Test
+    @DisplayName("닉네임 변경 성공")
+    void updateNickname() {
+        final Long userId = 1L;
+        final UpdateNicknameRequest request;
+        userService.updateNickname(userId, request);
+
+        assertThat(userRepository.findById(userId).get().getNickname()).isEqualTo("업데이트닉네임");
+    }
 }

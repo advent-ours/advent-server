@@ -34,4 +34,8 @@ public class UserService {
     private OAuthRequestPort getProperProviderPort(final OAuthProvider provider) {
         return oAuthRequestPortMap.get(provider);
     }
+
+    public void updateNickname(final Long userId, final UpdateNicknameRequest request) {
+        throw new UnsupportedOperationException("UserService#updateNickname not implemented yet.")
+    }
 }
