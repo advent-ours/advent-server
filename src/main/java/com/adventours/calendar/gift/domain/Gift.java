@@ -34,9 +34,11 @@ public class Gift {
     @Column(nullable = false)
     private GiftType giftType;
 
+    private String title;
+
     private String contentUrl;
 
-    private String body;
+    private String text;
 
     public Gift(final Calendar calendar, final int days, final GiftType giftType) {
         this.calendar = calendar;
