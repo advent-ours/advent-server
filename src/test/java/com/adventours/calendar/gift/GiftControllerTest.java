@@ -36,11 +36,12 @@ class GiftControllerTest extends ApiTest {
     }
 
     @Test
-    void getCalendarDetail() {
-        Long calendarId = 1L;
+    void getGiftList() {
+        String calendarId = "UUID";
         Scenario.createCalendar().request();
 
         calendarRepository.findById(calendarId).orElseThrow();
-        giftService.getCalendarDetail(calendarId);
+
+        giftService.getGiftList(calendarId);
     }
 }

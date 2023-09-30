@@ -28,7 +28,7 @@ public class GiftService {
         return giftRepository.findById(giftId).orElseThrow();
     }
 
-    public CalendarDetailResponse getCalendarDetail(final Long calendarId) {
+    public GiftListResponse getGiftList(final String calendarId) {
         throw new UnsupportedOperationException("GiftService#getCalendarDetail not implemented yet.");
     }
 }
