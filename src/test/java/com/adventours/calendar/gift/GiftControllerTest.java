@@ -34,4 +34,13 @@ class GiftControllerTest extends ApiTest {
                 () -> org.assertj.core.api.Assertions.assertThat(gift.getGiftType()).isEqualTo(GiftType.TEXT)
         );
     }
+
+    @Test
+    void getCalendarDetail() {
+        Long calendarId = 1L;
+        Scenario.createCalendar().request();
+
+        calendarRepository.findById(calendarId).orElseThrow();
+        giftService.getCalendarDetail(calendarId);
+    }
 }
