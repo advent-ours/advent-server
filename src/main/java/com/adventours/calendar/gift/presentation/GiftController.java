@@ -4,7 +4,9 @@ import com.adventours.calendar.auth.Auth;
 import com.adventours.calendar.auth.UserContext;
 import com.adventours.calendar.gift.service.GiftService;
 import com.adventours.calendar.gift.service.UpdateGiftRequest;
+import com.adventours.calendar.global.CommonResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,10 +19,11 @@ public class GiftController {
 
     @Auth
     @PostMapping("/calendar/{calendarId}/gifts/{giftId}")
-    public void updateGift(@PathVariable final Long calendarId,
-                           @PathVariable final Long giftId,
-                           @RequestBody final UpdateGiftRequest request) {
+    public ResponseEntity<CommonResponse<Void>> updateGift(@PathVariable final Long calendarId,
+                                                           @PathVariable final Long giftId,
+                                                           @RequestBody final UpdateGiftRequest request) {
         final Long userId = UserContext.getContext();
         giftService.updateGift(userId, giftId, request);
+        return ResponseEntity.ok(new CommonResponse<>());
     }
 }

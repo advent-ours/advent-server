@@ -1,16 +1,21 @@
 package com.adventours.calendar.user.presentation;
 
+import com.adventours.calendar.auth.Auth;
 import com.adventours.calendar.auth.JwtTokenDto;
 import com.adventours.calendar.auth.JwtTokenIssuer;
+import com.adventours.calendar.auth.UserContext;
 import com.adventours.calendar.global.CommonResponse;
 import com.adventours.calendar.user.domain.OAuthProvider;
 import com.adventours.calendar.user.service.LoginRequest;
 import com.adventours.calendar.user.service.LoginResponse;
+import com.adventours.calendar.user.service.UpdateNicknameRequest;
 import com.adventours.calendar.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,5 +33,13 @@ public class UserController {
         final JwtTokenDto jwtTokenDto = tokenIssuer.issueToken(response.getUserId());
         response.issueToken(jwtTokenDto);
         return ResponseEntity.ok(new CommonResponse<>(response));
+    }
+
+    @Auth
+    @PutMapping("/nickname")
+    public ResponseEntity<CommonResponse<Void>> updateNickname(@RequestBody final UpdateNicknameRequest request) {
+        final Long userId = UserContext.getContext();
+        userService.updateNickname(userId, request);
+        return ResponseEntity.ok(new CommonResponse<>());
     }
 }
