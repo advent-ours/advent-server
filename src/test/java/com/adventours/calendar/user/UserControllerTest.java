@@ -80,7 +80,15 @@ class UserControllerTest extends ApiTest {
     void updateNickname() {
         final Long userId = 1L;
         final UpdateNicknameRequest request = new UpdateNicknameRequest("updatedNickname");
-        userService.updateNickname(userId, request);
+
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when()
+                .header("Authorization", accessToken)
+                .put("/user/nickname")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
 
         assertThat(userRepository.findById(userId).get().getNickname()).isEqualTo("updatedNickname");
     }
