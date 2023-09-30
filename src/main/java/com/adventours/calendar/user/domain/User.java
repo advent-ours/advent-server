@@ -1,5 +1,6 @@
 package com.adventours.calendar.user.domain;
 
+import com.adventours.calendar.global.BaseTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,7 +14,7 @@ import lombok.Getter;
 @Getter
 @Entity
 @Table(name = "USERS")
-public class User {
+public class User extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

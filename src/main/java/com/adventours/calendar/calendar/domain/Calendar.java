@@ -1,5 +1,6 @@
 package com.adventours.calendar.calendar.domain;
 
+import com.adventours.calendar.global.BaseTime;
 import com.adventours.calendar.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "CALENDAR")
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
-public class Calendar {
+public class Calendar extends BaseTime {
 
     @Id
     @GeneratedValue(generator = "uuid2")

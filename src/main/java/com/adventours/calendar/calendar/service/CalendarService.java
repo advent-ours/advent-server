@@ -46,4 +46,11 @@ public class CalendarService {
         }
         return calendar;
     }
+
+    @Transactional(readOnly = true)
+    public List<CalendarListResponse> getMyCalendarList(final Long userId) {
+        final User user = userRepository.getReferenceById(userId);
+        final List<Calendar> calendarList = calendarRepository.findAllByUser(user);
+        return CalendarListResponse.responseToList(calendarList);
+    }
 }
