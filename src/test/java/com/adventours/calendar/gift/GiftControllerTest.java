@@ -8,6 +8,7 @@ import com.adventours.calendar.gift.domain.Gift;
 import com.adventours.calendar.gift.domain.GiftType;
 import com.adventours.calendar.gift.persistence.GiftRepository;
 import com.adventours.calendar.gift.service.GiftService;
+import io.restassured.RestAssured;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,10 +40,12 @@ class GiftControllerTest extends ApiTest {
     @Test
     void getGiftList() {
         Scenario.createCalendar().request();
-
         final Calendar calendar = calendarRepository.findAll().get(0);
-
-        final Long userId = 1L;
-        giftService.getGiftList(userId, calendar.getId().toString());
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .get("/calendar/{calendarId}", userId, calendar.getId())
+                .then()
+                .statusCode(200);
     }
 }
