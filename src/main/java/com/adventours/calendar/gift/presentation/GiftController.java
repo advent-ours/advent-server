@@ -2,15 +2,19 @@ package com.adventours.calendar.gift.presentation;
 
 import com.adventours.calendar.auth.Auth;
 import com.adventours.calendar.auth.UserContext;
+import com.adventours.calendar.gift.service.GiftListResponse;
 import com.adventours.calendar.gift.service.GiftService;
 import com.adventours.calendar.gift.service.UpdateGiftRequest;
 import com.adventours.calendar.global.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,12 +22,20 @@ public class GiftController {
     private final GiftService giftService;
 
     @Auth
-    @PostMapping("/calendar/{calendarId}/gifts/{giftId}")
+    @PostMapping("/calendar/{calendarId}/gift/{giftId}")
     public ResponseEntity<CommonResponse<Void>> updateGift(@PathVariable final Long calendarId,
                                                            @PathVariable final Long giftId,
                                                            @RequestBody final UpdateGiftRequest request) {
         final Long userId = UserContext.getContext();
         giftService.updateGift(userId, giftId, request);
         return ResponseEntity.ok(new CommonResponse<>());
+    }
+
+    @Auth
+    @GetMapping("/calendar/{calendarId}/gift")
+    public ResponseEntity<CommonResponse<List<GiftListResponse>>> getGiftList(@PathVariable final String calendarId) {
+        final Long userId = UserContext.getContext();
+        final List<GiftListResponse> giftList = giftService.getGiftList(userId, calendarId);
+        return ResponseEntity.ok(new CommonResponse<>(giftList));
     }
 }

@@ -1,5 +1,6 @@
 package com.adventours.calendar.gift;
 
+import com.adventours.calendar.calendar.domain.Calendar;
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
 import com.adventours.calendar.common.ApiTest;
 import com.adventours.calendar.common.Scenario;
@@ -7,6 +8,7 @@ import com.adventours.calendar.gift.domain.Gift;
 import com.adventours.calendar.gift.domain.GiftType;
 import com.adventours.calendar.gift.persistence.GiftRepository;
 import com.adventours.calendar.gift.service.GiftService;
+import io.restassured.RestAssured;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,5 +35,20 @@ class GiftControllerTest extends ApiTest {
                 () -> org.assertj.core.api.Assertions.assertThat(gift.getTextBody()).isEqualTo("내용"),
                 () -> org.assertj.core.api.Assertions.assertThat(gift.getGiftType()).isEqualTo(GiftType.TEXT)
         );
+    }
+
+    @Test
+    @DisplayName("선물 리스트 조회 성공")
+    void getGiftList() {
+        Scenario.createCalendar().request();
+        final Calendar calendar = calendarRepository.findAll().get(0);
+
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .get("/calendar/{calendarId}/gift", calendar.getId())
+                .then()
+                .log().all()
+                .statusCode(200);
     }
 }
