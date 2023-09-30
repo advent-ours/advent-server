@@ -1,12 +1,12 @@
 package com.adventours.calendar.user;
 
 import com.adventours.calendar.common.ApiTest;
+import com.adventours.calendar.common.Scenario;
 import com.adventours.calendar.user.client.KakaoOAuthFeignClient;
 import com.adventours.calendar.user.domain.OAuthProvider;
 import com.adventours.calendar.user.persistence.UserRepository;
 import com.adventours.calendar.user.service.KakaoUserInformation;
 import com.adventours.calendar.user.service.LoginRequest;
-import com.adventours.calendar.user.service.UpdateNicknameRequest;
 import com.adventours.calendar.user.service.UserService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -78,18 +78,9 @@ class UserControllerTest extends ApiTest {
     @Test
     @DisplayName("닉네임 변경 성공")
     void updateNickname() {
+        Scenario.updateNickname().request();
+
         final Long userId = 1L;
-        final UpdateNicknameRequest request = new UpdateNicknameRequest("updatedNickname");
-
-        RestAssured.given().log().all()
-                .contentType(ContentType.JSON)
-                .body(request)
-                .when()
-                .header("Authorization", accessToken)
-                .put("/user/nickname")
-                .then().log().all()
-                .statusCode(HttpStatus.OK.value());
-
         assertThat(userRepository.findById(userId).get().getNickname()).isEqualTo("updatedNickname");
     }
 }
