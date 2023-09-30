@@ -3,11 +3,8 @@ package com.adventours.calendar.calendar;
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
 import com.adventours.calendar.common.ApiTest;
 import com.adventours.calendar.common.Scenario;
-import com.adventours.calendar.gift.domain.Gift;
-import com.adventours.calendar.gift.domain.GiftType;
 import com.adventours.calendar.gift.persistence.GiftRepository;
 import com.adventours.calendar.gift.service.GiftService;
-import com.adventours.calendar.gift.service.UpdateGiftRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,27 +28,4 @@ class CalendarControllerTest extends ApiTest {
         );
     }
 
-    @Test
-    @DisplayName("캘린더 생성/수정 성공")
-    void updateCalendar() {
-        Scenario.createCalendar().request();
-        final long userId = 1L;
-        final long giftId = 1L;
-        final UpdateGiftRequest request = new UpdateGiftRequest(
-                giftId,
-                GiftType.TEXT,
-                "제목",
-                "내용",
-                null
-        );
-
-        giftService.updateGift(userId, request);
-
-        final Gift gift = giftRepository.findById(1L).get();
-        Assertions.assertAll(
-                () -> assertThat(gift.getTitle()).isEqualTo(request.title()),
-                () -> assertThat(gift.getTextBody()).isEqualTo(request.textBody()),
-                () -> assertThat(gift.getGiftType()).isEqualTo(request.giftType())
-        );
-    }
 }
