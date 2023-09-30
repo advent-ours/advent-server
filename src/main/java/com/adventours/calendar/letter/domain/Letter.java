@@ -1,6 +1,7 @@
 package com.adventours.calendar.letter.domain;
 
 import com.adventours.calendar.calendar.domain.Calendar;
+import com.adventours.calendar.global.BaseTime;
 import com.adventours.calendar.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -18,7 +19,7 @@ import lombok.Getter;
 @Getter
 @Entity
 @Table(name = "LETTER")
-public class Letter {
+public class Letter extends BaseTime {
     @Id
     @Column(name = "LETTER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
