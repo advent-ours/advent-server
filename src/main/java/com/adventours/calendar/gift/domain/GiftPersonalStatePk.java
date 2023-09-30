@@ -19,4 +19,9 @@ public class GiftPersonalStatePk implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="USER_ID", nullable = false, referencedColumnName = "USER_ID", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
+
+    public GiftPersonalStatePk(final Gift gift, final User user) {
+        this.gift = gift;
+        this.user = user;
+    }
 }

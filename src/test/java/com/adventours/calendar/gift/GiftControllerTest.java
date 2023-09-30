@@ -1,5 +1,6 @@
 package com.adventours.calendar.gift;
 
+import com.adventours.calendar.calendar.domain.Calendar;
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
 import com.adventours.calendar.common.ApiTest;
 import com.adventours.calendar.common.Scenario;
@@ -37,11 +38,11 @@ class GiftControllerTest extends ApiTest {
 
     @Test
     void getGiftList() {
-        String calendarId = "UUID";
         Scenario.createCalendar().request();
 
-        calendarRepository.findById(calendarId).orElseThrow();
+        final Calendar calendar = calendarRepository.findAll().get(0);
 
-        giftService.getGiftList(calendarId);
+        final Long userId = 1L;
+        giftService.getGiftList(userId, calendar.getId().toString());
     }
 }

@@ -20,6 +20,9 @@ public class GiftPersonalState {
     @Convert(converter = TrueFalseConverter.class)
     private boolean isOpened = false;
 
-    //TODO: Enum으로 제공
-    private String react;
+    private GiftReact react;
+
+    public GiftPersonalState() {
+    }
+
 }
