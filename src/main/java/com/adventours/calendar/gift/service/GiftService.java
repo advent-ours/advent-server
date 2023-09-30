@@ -12,8 +12,8 @@ public class GiftService {
     private final GiftRepository giftRepository;
 
     @Transactional
-    public void updateGift(final long userId, final UpdateGiftRequest request) {
-        final Gift gift = getGift(request);
+    public void updateGift(final long userId, final long giftId, final UpdateGiftRequest request) {
+        final Gift gift = getGift(giftId);
         validateOwnerOfGift(userId, gift);
         gift.updateContent(request.giftType(), request.title(), request.textBody(), request.contentUrl());
     }
@@ -24,7 +24,7 @@ public class GiftService {
         }
     }
 
-    private Gift getGift(final UpdateGiftRequest request) {
-        return giftRepository.findById(request.id()).orElseThrow();
+    private Gift getGift(final Long giftId) {
+        return giftRepository.findById(giftId).orElseThrow();
     }
 }

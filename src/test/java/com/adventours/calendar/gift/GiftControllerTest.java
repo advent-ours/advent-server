@@ -30,7 +30,6 @@ class GiftControllerTest extends ApiTest {
         final long calendarId = 1L;
         final long giftId = 1L;
         final UpdateGiftRequest request = new UpdateGiftRequest(
-                giftId,
                 GiftType.TEXT,
                 "제목",
                 "내용",
@@ -42,7 +41,7 @@ class GiftControllerTest extends ApiTest {
                 .contentType("application/json")
                 .body(request)
                 .when()
-                .put("/calendar/{calendarId}/gifts/{giftId}", calendarId, giftId)
+                .post("/calendar/{calendarId}/gifts/{giftId}", calendarId, giftId)
                 .then()
                 .statusCode(200);
 
