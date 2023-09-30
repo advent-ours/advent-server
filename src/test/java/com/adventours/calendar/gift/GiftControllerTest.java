@@ -38,14 +38,17 @@ class GiftControllerTest extends ApiTest {
     }
 
     @Test
+    @DisplayName("선물 리스트 조회 성공")
     void getGiftList() {
         Scenario.createCalendar().request();
         final Calendar calendar = calendarRepository.findAll().get(0);
+
         RestAssured.given().log().all()
                 .header("Authorization", accessToken)
                 .when()
-                .get("/calendar/{calendarId}", userId, calendar.getId())
+                .get("/calendar/{calendarId}/gift", calendar.getId())
                 .then()
+                .log().all()
                 .statusCode(200);
     }
 }

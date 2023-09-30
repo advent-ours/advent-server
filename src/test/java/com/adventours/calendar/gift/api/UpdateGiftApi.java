@@ -60,7 +60,7 @@ public class UpdateGiftApi {
                 .contentType("application/json")
                 .body(request)
                 .when()
-                .post("/calendar/{calendarId}/gifts/{giftId}", calendarId, giftId)
+                .post("/calendar/{calendarId}/gift/{giftId}", calendarId, giftId)
                 .then()
                 .statusCode(200);
     }
