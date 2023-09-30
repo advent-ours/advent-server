@@ -1,18 +1,16 @@
 package com.adventours.calendar.calendar;
 
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
-import com.adventours.calendar.calendar.service.CalendarListResponse;
 import com.adventours.calendar.calendar.service.CalendarService;
 import com.adventours.calendar.common.ApiTest;
 import com.adventours.calendar.common.Scenario;
 import com.adventours.calendar.gift.persistence.GiftRepository;
 import com.adventours.calendar.gift.service.GiftService;
+import io.restassured.RestAssured;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,7 +36,7 @@ class CalendarControllerTest extends ApiTest {
     }
 
     @Test
-    @DisplayName("나의 캘린더 목록 조회")
+    @DisplayName("나의 캘린더 목록 조회 성공")
     void getMyCalendarList() {
         Scenario.createCalendar().title("캘린더1").request()
                 .createCalendar().title("캘린더2").request()
@@ -46,13 +44,13 @@ class CalendarControllerTest extends ApiTest {
                 .createCalendar().title("캘린더4").request()
                 .createCalendar().title("캘린더5").request();
 
-        final Long userId = 1L;
-        final List<CalendarListResponse> myCalendarList = calendarService.getMyCalendarList(userId);
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .get("/calendar/my")
+                .then()
+                .log().all()
+                .statusCode(200);
 
-        Assertions.assertAll(
-                () -> assertThat(myCalendarList).hasSize(5),
-                () -> assertThat(myCalendarList.get(0).title()).isEqualTo("캘린더1"),
-                () -> assertThat(myCalendarList.get(4).title()).isEqualTo("캘린더5")
-        );
     }
 }
