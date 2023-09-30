@@ -79,9 +79,9 @@ class UserControllerTest extends ApiTest {
     @DisplayName("닉네임 변경 성공")
     void updateNickname() {
         final Long userId = 1L;
-        final UpdateNicknameRequest request;
+        final UpdateNicknameRequest request = new UpdateNicknameRequest("updatedNickname");
         userService.updateNickname(userId, request);
 
-        assertThat(userRepository.findById(userId).get().getNickname()).isEqualTo("업데이트닉네임");
+        assertThat(userRepository.findById(userId).get().getNickname()).isEqualTo("updatedNickname");
     }
 }
