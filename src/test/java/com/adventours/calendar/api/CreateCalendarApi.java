@@ -1,6 +1,7 @@
 package com.adventours.calendar.api;
 
 import com.adventours.calendar.calendar.service.CreateCalendarRequest;
+import com.adventours.calendar.common.Scenario;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ public class CreateCalendarApi {
         return this;
     }
 
-    public void request() {
+    public Scenario request() {
 
         final CreateCalendarRequest request = new CreateCalendarRequest(title);
 
@@ -28,5 +29,6 @@ public class CreateCalendarApi {
                 .post("/calendar")
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
+        return new Scenario();
     }
 }

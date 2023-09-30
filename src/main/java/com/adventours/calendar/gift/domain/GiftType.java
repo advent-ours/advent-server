@@ -1,5 +1,9 @@
 package com.adventours.calendar.gift.domain;
 
 public enum GiftType {
-    INIT
+    INIT,
+    TEXT,
+    IMAGE,
+    RECORD,
+    VIDEO
 }
