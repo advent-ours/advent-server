@@ -13,7 +13,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.adventours.calendar.gift.domain.GiftType.INIT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CalendarControllerTest extends ApiTest {
@@ -35,8 +34,11 @@ class CalendarControllerTest extends ApiTest {
     @Test
     @DisplayName("캘린더 생성/수정 성공")
     void updateCalendar() {
+        Scenario.createCalendar().request();
         final long userId = 1L;
+        final long giftId = 1L;
         final UpdateGiftRequest request = new UpdateGiftRequest(
+                giftId,
                 GiftType.TEXT,
                 "제목",
                 "내용",
@@ -47,8 +49,9 @@ class CalendarControllerTest extends ApiTest {
 
         final Gift gift = giftRepository.findById(1L).get();
         Assertions.assertAll(
-                () -> assertThat(gift.getText()).isEqualTo(""),
-                () -> assertThat(gift.getGiftType()).isEqualTo(INIT)
+                () -> assertThat(gift.getTitle()).isEqualTo(request.title()),
+                () -> assertThat(gift.getTextBody()).isEqualTo(request.textBody()),
+                () -> assertThat(gift.getGiftType()).isEqualTo(request.giftType())
         );
     }
 }

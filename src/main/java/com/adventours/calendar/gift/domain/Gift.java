@@ -38,7 +38,10 @@ public class Gift {
 
     private String contentUrl;
 
-    private String text;
+    private String textBody;
+
+    public Gift() {
+    }
 
     public Gift(final Calendar calendar, final int days, final GiftType giftType) {
         this.calendar = calendar;
@@ -48,5 +51,12 @@ public class Gift {
 
     public static Gift initOf(final Calendar calendar, final int days) {
         return new Gift(calendar, days, GiftType.INIT);
+    }
+
+    public void updateContent(final GiftType giftType, final String title, final String textBody, final String contentUrl) {
+        this.giftType = giftType;
+        this.title = title;
+        this.textBody = textBody;
+        this.contentUrl = contentUrl;
     }
 }
