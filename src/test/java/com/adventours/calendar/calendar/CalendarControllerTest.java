@@ -50,7 +50,7 @@ class CalendarControllerTest extends ApiTest {
         final List<CalendarListResponse> myCalendarList = calendarService.getMyCalendarList(userId);
 
         Assertions.assertAll(
-                () -> assertThat(myCalendarList.size()).isEqualTo(5),
+                () -> assertThat(myCalendarList).hasSize(5),
                 () -> assertThat(myCalendarList.get(0).title()).isEqualTo("캘린더1"),
                 () -> assertThat(myCalendarList.get(4).title()).isEqualTo("캘린더5")
         );
