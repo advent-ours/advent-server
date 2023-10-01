@@ -2,6 +2,7 @@ package com.adventours.calendar.calendar.domain;
 
 import com.adventours.calendar.global.BaseTime;
 import com.adventours.calendar.user.domain.User;
+import com.google.common.annotations.VisibleForTesting;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -42,4 +43,10 @@ public class Calendar extends BaseTime {
         this.title = title;
     }
 
+    @VisibleForTesting
+    public Calendar(final UUID id, final User user, final String title) {
+        this.id = id;
+        this.user = user;
+        this.title = title;
+    }
 }
