@@ -56,7 +56,7 @@ public class CalendarService {
     public List<CalendarListResponse> getMyCalendarList(final Long userId) {
         final User user = userRepository.getReferenceById(userId);
         final List<Calendar> calendarList = calendarRepository.findAllByUser(user);
-        return CalendarListResponse.responseToList(calendarList);
+        return CalendarListResponse.toListForResponse(calendarList);
     }
 
     public void subscribe(final Long userId, final String calendarId) {
@@ -69,6 +69,10 @@ public class CalendarService {
         }
     }
 
-    public List<SubscribeInfoResponse> getSubscribeList(final Long userId) {
+    @Transactional(readOnly = true)
+    public List<CalendarListResponse> getSubscribeList(final Long userId) {
+        final User user = userRepository.getReferenceById(userId);
+        List<Calendar> calendarList = calendarRepository.findAllBySubscriber(user);
+        return CalendarListResponse.toListForResponse(calendarList);
     }
 }

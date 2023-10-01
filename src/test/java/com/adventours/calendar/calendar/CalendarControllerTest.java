@@ -3,8 +3,8 @@ package com.adventours.calendar.calendar;
 import com.adventours.calendar.calendar.domain.Calendar;
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
 import com.adventours.calendar.calendar.persistence.SubscribeRepository;
+import com.adventours.calendar.calendar.service.CalendarListResponse;
 import com.adventours.calendar.calendar.service.CalendarService;
-import com.adventours.calendar.calendar.service.SubscribeInfoResponse;
 import com.adventours.calendar.common.ApiTest;
 import com.adventours.calendar.common.Scenario;
 import com.adventours.calendar.gift.persistence.GiftRepository;
@@ -82,7 +82,7 @@ class CalendarControllerTest extends ApiTest {
                 .subscribeCalendar().calendarId(calendar3.getId()).request();
 
         final Long userId = 1L;
-        final List<SubscribeInfoResponse> subscribeList = calendarService.getSubscribeList(userId);
+        final List<CalendarListResponse> subscribeList = calendarService.getSubscribeList(userId);
 
         assertThat(subscribeList).hasSize(3);
     }
