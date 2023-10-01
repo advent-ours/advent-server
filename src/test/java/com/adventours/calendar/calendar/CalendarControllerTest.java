@@ -1,6 +1,7 @@
 package com.adventours.calendar.calendar;
 
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
+import com.adventours.calendar.calendar.persistence.SubscribeRepository;
 import com.adventours.calendar.calendar.service.CalendarService;
 import com.adventours.calendar.common.ApiTest;
 import com.adventours.calendar.common.Scenario;
@@ -24,6 +25,8 @@ class CalendarControllerTest extends ApiTest {
     GiftService giftService;
     @Autowired
     CalendarService calendarService;
+    @Autowired
+    SubscribeRepository subscribeRepository;
 
     @Test
     @DisplayName("캘린더 생성 성공")
@@ -51,6 +54,16 @@ class CalendarControllerTest extends ApiTest {
                 .then()
                 .log().all()
                 .statusCode(200);
+    }
 
+    @Test
+    @DisplayName("캘린더 구독 성공")
+    void subscribeCalendar() {
+        Scenario.createCalendar().request();
+        final String calendarId = calendarRepository.findAll().get(0).getId().toString();
+
+        final Long userId = 1L;
+        calendarService.subscribe(userId, calendarId);
+        assertThat(subscribeRepository.count()).isOne();
     }
 }
