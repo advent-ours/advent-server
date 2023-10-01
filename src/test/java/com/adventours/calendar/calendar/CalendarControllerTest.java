@@ -86,6 +86,5 @@ class CalendarControllerTest extends ApiTest {
                 .then()
                 .log().all()
                 .statusCode(200);
-
     }
 }
