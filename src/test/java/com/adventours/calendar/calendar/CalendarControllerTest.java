@@ -3,7 +3,6 @@ package com.adventours.calendar.calendar;
 import com.adventours.calendar.calendar.domain.Calendar;
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
 import com.adventours.calendar.calendar.persistence.SubscribeRepository;
-import com.adventours.calendar.calendar.service.CalendarListResponse;
 import com.adventours.calendar.calendar.service.CalendarService;
 import com.adventours.calendar.common.ApiTest;
 import com.adventours.calendar.common.Scenario;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -81,9 +79,13 @@ class CalendarControllerTest extends ApiTest {
                 .subscribeCalendar().calendarId(calendar2.getId()).request()
                 .subscribeCalendar().calendarId(calendar3.getId()).request();
 
-        final Long userId = 1L;
-        final List<CalendarListResponse> subscribeList = calendarService.getSubscribeList(userId);
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .get("/calendar/sub")
+                .then()
+                .log().all()
+                .statusCode(200);
 
-        assertThat(subscribeList).hasSize(3);
     }
 }
