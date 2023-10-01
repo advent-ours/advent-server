@@ -8,11 +8,11 @@ import java.util.UUID;
 
 public class CreateCalendarDB {
 
-    private String uuid;
+    private UUID uuid;
     private User user;
-    private String title;
+    private String title = "title";
 
-    public CreateCalendarDB uuid(String uuid) {
+    public CreateCalendarDB uuid(UUID uuid) {
         this.uuid = uuid;
         return this;
     }
@@ -29,7 +29,7 @@ public class CreateCalendarDB {
 
     public Calendar create() {
         return DBTestUtil.calendarRepository.save(new Calendar(
-                UUID.fromString(uuid),
+                uuid,
                 user,
                 title));
     };
