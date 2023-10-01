@@ -42,6 +42,14 @@ public class CalendarController {
     }
 
     @Auth
+    @GetMapping("/sub")
+    public ResponseEntity<List<CalendarListResponse>> getSubscribeList() {
+        final Long userId = UserContext.getContext();
+        final List<CalendarListResponse> myCalendarList = calendarService.getSubscribeList(userId);
+        return ResponseEntity.ok(myCalendarList);
+    }
+
+    @Auth
     @PostMapping("/sub/{calendarId}")
     public ResponseEntity<CommonResponse<Void>> subscribeCalendar(@PathVariable final String calendarId) {
         final Long userId = UserContext.getContext();

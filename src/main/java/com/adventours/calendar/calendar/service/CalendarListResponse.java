@@ -15,7 +15,7 @@ public record CalendarListResponse(
         LocalDateTime updatedAt
 ) {
 
-    static List<CalendarListResponse> responseToList(List<Calendar> calendars) {
+    static List<CalendarListResponse> toListForResponse(List<Calendar> calendars) {
         return calendars.stream()
                 .map(calendar -> new CalendarListResponse(
                         calendar.getId(),
