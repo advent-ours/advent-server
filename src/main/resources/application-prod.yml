@@ -8,3 +8,14 @@ spring:
     hibernate:
       ddl-auto: create
     open-in-view: false
+
+oauth:
+  kakao:
+    auth_url: ${kakao_auth_url}
+  apple:
+    auth-uri: ${apple_auth_uri}
+
+jwt:
+  access-token:
+    expire-length: ${jwt_access_token_expire_length}
+    secret: ${jwt_access_token_secret}
