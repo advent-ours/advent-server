@@ -1,5 +1,6 @@
 package com.adventours.calendar.calendar.api;
 
+import com.adventours.calendar.common.Scenario;
 import io.restassured.RestAssured;
 
 import java.util.UUID;
@@ -15,7 +16,7 @@ public class SubscribeCalendarApi {
         return this;
     }
 
-    public void request() {
+    public Scenario request() {
         RestAssured.given().log().all()
                 .header("Authorization", accessToken)
                 .when()
@@ -23,5 +24,6 @@ public class SubscribeCalendarApi {
                 .then()
                 .log().all()
                 .statusCode(200);
+        return new Scenario();
     }
 }

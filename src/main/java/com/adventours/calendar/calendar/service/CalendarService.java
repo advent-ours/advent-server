@@ -68,4 +68,7 @@ public class CalendarService {
             throw new RuntimeException();
         }
     }
+
+    public List<SubscribeInfoResponse> getSubscribeList(final Long userId) {
+    }
 }
