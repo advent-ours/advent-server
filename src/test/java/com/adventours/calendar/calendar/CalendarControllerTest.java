@@ -65,15 +65,7 @@ class CalendarControllerTest extends ApiTest {
     void subscribeCalendar() {
         final User user = Scenario.createUserDB().id(2L).create();
         final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
-
-        RestAssured.given().log().all()
-                .header("Authorization", accessToken)
-                .when()
-                .post("/calendar/sub/{calendarId}", calendar.getId())
-                .then()
-                .log().all()
-                .statusCode(200);
-
+        Scenario.subscribeCalendar().calendarId(calendar.getId()).request();
         assertThat(subscribeRepository.count()).isOne();
     }
 }
