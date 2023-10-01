@@ -69,7 +69,7 @@ class CalendarControllerTest extends ApiTest {
         RestAssured.given().log().all()
                 .header("Authorization", accessToken)
                 .when()
-                .get("/calendar/sub/{calendarId}", calendar.getId())
+                .post("/calendar/sub/{calendarId}", calendar.getId())
                 .then()
                 .log().all()
                 .statusCode(200);
