@@ -1,6 +1,7 @@
 package com.adventours.calendar.common;
 
 import com.adventours.calendar.auth.JwtTokenIssuer;
+import com.adventours.calendar.calendar.persistence.CalendarRepository;
 import com.adventours.calendar.user.domain.OAuthProvider;
 import com.adventours.calendar.user.domain.User;
 import com.adventours.calendar.user.persistence.UserRepository;
@@ -22,6 +23,8 @@ public class ApiTest {
     UserRepository userRepository;
     @Autowired
     JwtTokenIssuer jwtTokenIssuer;
+    @Autowired
+    CalendarRepository calendarRepository;
     public static String accessToken;
 
     @BeforeEach
@@ -33,5 +36,8 @@ public class ApiTest {
         databaseCleaner.execute();
         userRepository.save(new User(OAuthProvider.KAKAO, "providerId", "profileImage"));
         accessToken = jwtTokenIssuer.issueToken(1L).accessToken();
+
+        DBTestUtil.setUserRepository(userRepository);
+        DBTestUtil.setCalendarRepository(calendarRepository);
     }
 }

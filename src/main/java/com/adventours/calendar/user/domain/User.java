@@ -1,6 +1,7 @@
 package com.adventours.calendar.user.domain;
 
 import com.adventours.calendar.global.BaseTime;
+import com.google.common.annotations.VisibleForTesting;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,6 +37,15 @@ public class User extends BaseTime {
     public User(final OAuthProvider provider, final String providerId, final String profileImgUrl) {
         this.provider = provider;
         this.providerId = providerId;
+        this.profileImgUrl = profileImgUrl;
+    }
+
+    @VisibleForTesting
+    public User(final Long id, final OAuthProvider provider, final String providerId, final String nickname, final String profileImgUrl) {
+        this.id = id;
+        this.provider = provider;
+        this.providerId = providerId;
+        this.nickname = nickname;
         this.profileImgUrl = profileImgUrl;
     }
 
