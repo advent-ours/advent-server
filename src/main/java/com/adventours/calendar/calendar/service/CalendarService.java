@@ -91,4 +91,13 @@ public class CalendarService {
         List<Calendar> calendarList = calendarRepository.findAllBySubscriber(user);
         return CalendarListResponse.toListForResponse(calendarList);
     }
+
+    @Transactional
+    public void updateCalendar(final Long userId, final String calendarId, final UpdateCalendarRequest request) {
+        final Calendar calendar = calendarRepository.findById(UUID.fromString(calendarId)).orElseThrow();
+        if (!calendar.isOwner(userId)) {
+            throw new RuntimeException();
+        }
+        calendar.update(request.title());
+    }
 }

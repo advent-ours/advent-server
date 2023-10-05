@@ -49,4 +49,12 @@ public class Calendar extends BaseTime {
         this.user = user;
         this.title = title;
     }
+
+    public boolean isOwner(final Long userId) {
+        return user.getId().equals(userId);
+    }
+
+    public void update(final String title) {
+        this.title = title;
+    }
 }
