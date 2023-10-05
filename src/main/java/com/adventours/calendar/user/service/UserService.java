@@ -1,5 +1,6 @@
 package com.adventours.calendar.user.service;
 
+import com.adventours.calendar.exception.NotFoundUserException;
 import com.adventours.calendar.user.domain.OAuthProvider;
 import com.adventours.calendar.user.domain.User;
 import com.adventours.calendar.user.persistence.UserRepository;
@@ -38,13 +39,13 @@ public class UserService {
 
     @Transactional
     public void updateNickname(final Long userId, final UpdateNicknameRequest request) {
-        final User user = userRepository.findById(userId).orElseThrow();
+        final User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
         user.updateNickname(request.nickname());
     }
 
     @Transactional
     public void withdraw(final Long userId) {
-        final User user = userRepository.findById(userId).orElseThrow();
+        final User user = userRepository.findById(userId).orElseThrow(NotFoundUserException::new);
         user.withdraw();
     }
 }

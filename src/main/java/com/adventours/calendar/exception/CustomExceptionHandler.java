@@ -31,7 +31,7 @@ public class CustomExceptionHandler {
     protected ResponseEntity<CommonResponse<Void>> handleInternalErrorException(Exception e, HttpServletRequest request) {
         log.error("[Internal Error Message] request url: {}", request.getRequestURI(), e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new CommonResponse<>(ResCode.CAL500));
+                .body(new CommonResponse<>(ResCode.HBD500));
     }
 
     @ExceptionHandler({
@@ -47,7 +47,7 @@ public class CustomExceptionHandler {
     protected ResponseEntity<CommonResponse<Void>> handle400Exception(Exception e, HttpServletRequest request) {
         log.info("[잘못된 요청] request url: {}", request.getRequestURI(), e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new CommonResponse<>(ResCode.CAL100));
+                .body(new CommonResponse<>(ResCode.HBD100));
     }
 }
 
