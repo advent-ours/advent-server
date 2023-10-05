@@ -6,7 +6,6 @@ import com.adventours.calendar.common.ApiTest;
 import com.adventours.calendar.common.Scenario;
 import com.adventours.calendar.gift.domain.Gift;
 import com.adventours.calendar.gift.domain.GiftPersonalState;
-import com.adventours.calendar.gift.domain.GiftPersonalStatePk;
 import com.adventours.calendar.gift.domain.GiftType;
 import com.adventours.calendar.gift.persistence.GiftPersonalStateRepository;
 import com.adventours.calendar.gift.persistence.GiftRepository;
@@ -66,22 +65,12 @@ class GiftControllerTest extends ApiTest {
 
     @Test
     void openGift() {
-        final User me = userRepository.getReferenceById(1L);
         final User user = Scenario.createUserDB().id(2L).create();
         final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
-        Scenario.subscribeCalendar().calendarId(calendar.getId()).request();
-        final Long giftId = 1L;
+        Scenario.subscribeCalendar().calendarId(calendar.getId()).request().
+                openGift().calendarId(calendar.getTitle()).request();
 
-        RestAssured.given().log().all()
-                .header("Authorization", accessToken)
-                .when()
-                .post("/calendar/{calendarId}/gift/{giftId}/open", calendar.getId(), giftId)
-                .then()
-                .log().all()
-                .statusCode(200);
-
-        final Gift gift = giftRepository.getReferenceById(giftId);
-        final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, me)).orElseThrow();
+        final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findAll().get(0);
 
         assertThat(giftPersonalState.isOpened()).isTrue();
     }
