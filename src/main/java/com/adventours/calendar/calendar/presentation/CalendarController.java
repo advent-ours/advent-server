@@ -5,6 +5,7 @@ import com.adventours.calendar.auth.UserContext;
 import com.adventours.calendar.calendar.service.CalendarListResponse;
 import com.adventours.calendar.calendar.service.CalendarService;
 import com.adventours.calendar.calendar.service.CreateCalendarRequest;
+import com.adventours.calendar.calendar.service.UpdateCalendarRequest;
 import com.adventours.calendar.global.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,26 +29,34 @@ public class CalendarController {
 
     @Auth
     @PostMapping
-    public ResponseEntity<Void> createCalendar(@RequestBody final CreateCalendarRequest request) {
+    public ResponseEntity<CommonResponse<Void>> createCalendar(@RequestBody final CreateCalendarRequest request) {
         final Long userId = UserContext.getContext();
         calendarService.createCalendar(userId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CommonResponse<>());
+    }
+
+    @Auth
+    @PutMapping("/{calendarId}")
+    public ResponseEntity<CommonResponse<Void>> updateCalendar(@PathVariable final String calendarId, @RequestBody final UpdateCalendarRequest request) {
+        final Long userId = UserContext.getContext();
+        calendarService.updateCalendar(userId, calendarId, request);
+        return ResponseEntity.ok(new CommonResponse<>());
     }
 
     @Auth
     @GetMapping("/my")
-    public ResponseEntity<List<CalendarListResponse>> getMyCalendarList() {
+    public ResponseEntity<CommonResponse<List<CalendarListResponse>>> getMyCalendarList() {
         final Long userId = UserContext.getContext();
         final List<CalendarListResponse> myCalendarList = calendarService.getMyCalendarList(userId);
-        return ResponseEntity.ok(myCalendarList);
+        return ResponseEntity.ok(new CommonResponse<>(myCalendarList));
     }
 
     @Auth
     @GetMapping("/sub")
-    public ResponseEntity<List<CalendarListResponse>> getSubscribeList() {
+    public ResponseEntity<CommonResponse<List<CalendarListResponse>>> getSubscribeList() {
         final Long userId = UserContext.getContext();
         final List<CalendarListResponse> myCalendarList = calendarService.getSubscribeList(userId);
-        return ResponseEntity.ok(myCalendarList);
+        return ResponseEntity.ok(new CommonResponse<>(myCalendarList));
     }
 
     @Auth
