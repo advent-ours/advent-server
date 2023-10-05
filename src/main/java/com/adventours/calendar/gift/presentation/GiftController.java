@@ -38,4 +38,13 @@ public class GiftController {
         final List<GiftListResponse> giftList = giftService.getGiftList(userId, calendarId);
         return ResponseEntity.ok(new CommonResponse<>(giftList));
     }
+
+    @Auth
+    @PostMapping("/calendar/{calendarId}/gift/{giftId}/open")
+    public ResponseEntity<CommonResponse<Void>> openGift(@PathVariable final String calendarId, @PathVariable final Long giftId) {
+        final Long userId = UserContext.getContext();
+        giftService.openGift(userId, giftId);
+        return ResponseEntity.ok(new CommonResponse<>());
+
+    }
 }
