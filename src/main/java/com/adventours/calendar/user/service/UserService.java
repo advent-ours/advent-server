@@ -41,4 +41,10 @@ public class UserService {
         final User user = userRepository.findById(userId).orElseThrow();
         user.updateNickname(request.nickname());
     }
+
+    @Transactional
+    public void withdraw(final Long userId) {
+        final User user = userRepository.findById(userId).orElseThrow();
+        user.withdraw();
+    }
 }

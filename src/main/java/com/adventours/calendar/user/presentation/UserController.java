@@ -12,7 +12,7 @@ import com.adventours.calendar.user.service.UpdateNicknameRequest;
 import com.adventours.calendar.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -47,6 +47,14 @@ public class UserController {
     @Auth
     @PostMapping("/logout")
     public ResponseEntity<CommonResponse<Void>> logout() {
+        return ResponseEntity.ok(new CommonResponse<>());
+    }
+
+    @Auth
+    @DeleteMapping("/withdraw")
+    public ResponseEntity<CommonResponse<Void>> withdraw() {
+        final Long userId = UserContext.getContext();
+        userService.withdraw(userId);
         return ResponseEntity.ok(new CommonResponse<>());
     }
 }
