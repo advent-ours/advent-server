@@ -55,4 +55,10 @@ public class User extends BaseTime {
 
     public User() {
     }
+
+    public void withdraw() {
+        this.nickname = "탈퇴한유저";
+        this.profileImgUrl = null;
+        this.providerId = "탈퇴한유저";
+    }
 }
