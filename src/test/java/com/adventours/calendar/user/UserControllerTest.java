@@ -83,4 +83,18 @@ class UserControllerTest extends ApiTest {
         final Long userId = 1L;
         assertThat(userRepository.findById(userId).get().getNickname()).isEqualTo("updatedNickname");
     }
+
+    @Test
+    @DisplayName("회원 탈퇴 성공")
+    void withdraw() {
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .when()
+                .header("Authorization", accessToken)
+                .delete("/user/withdraw")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value());
+        final Long userId = 1L;
+        assertThat(userRepository.findById(userId).get().getNickname()).isEqualTo("탈퇴한유저");
+    }
 }
