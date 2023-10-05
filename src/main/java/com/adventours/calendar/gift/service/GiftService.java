@@ -4,6 +4,7 @@ import com.adventours.calendar.calendar.domain.Calendar;
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
 import com.adventours.calendar.gift.domain.Gift;
 import com.adventours.calendar.gift.domain.GiftPersonalState;
+import com.adventours.calendar.gift.domain.GiftPersonalStatePk;
 import com.adventours.calendar.gift.domain.GiftReact;
 import com.adventours.calendar.gift.persistence.GiftPersonalStateRepository;
 import com.adventours.calendar.gift.persistence.GiftRepository;
@@ -64,5 +65,13 @@ public class GiftService {
                     react
             );
         }).toList();
+    }
+
+    @Transactional
+    public void openGift(final Long userId, final Long giftId) {
+        final User user = userRepository.getReferenceById(userId);
+        final Gift gift = giftRepository.getReferenceById(giftId);
+        final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, user)).orElseThrow();
+        giftPersonalState.open();
     }
 }

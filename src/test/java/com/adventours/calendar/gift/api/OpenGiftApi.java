@@ -1,17 +1,20 @@
-package com.adventours.calendar.calendar.api;
+package com.adventours.calendar.gift.api;
 
 import com.adventours.calendar.common.Scenario;
 import io.restassured.RestAssured;
 
-import java.util.UUID;
-
 import static com.adventours.calendar.common.ApiTest.accessToken;
 
-public class SubscribeCalendarApi {
+public class OpenGiftApi {
+    private Long giftId = 1L;
+    private String calendarId = null;
 
-    private UUID calendarId;
+    public OpenGiftApi giftId(final Long giftId) {
+        this.giftId = giftId;
+        return this;
+    }
 
-    public SubscribeCalendarApi calendarId(UUID calendarId) {
+    public OpenGiftApi calendarId(final String calendarId) {
         this.calendarId = calendarId;
         return this;
     }
@@ -21,7 +24,7 @@ public class SubscribeCalendarApi {
         RestAssured.given().log().all()
                 .header("Authorization", accessToken)
                 .when()
-                .post("/calendar/sub/{calendarId}", calendarId)
+                .post("/calendar/{calendarId}/gift/{giftId}/open", calendarId, giftId)
                 .then()
                 .log().all()
                 .statusCode(200);

@@ -24,4 +24,7 @@ public class GiftPersonalStatePk implements Serializable {
         this.gift = gift;
         this.user = user;
     }
+
+    public GiftPersonalStatePk() {
+    }
 }
