@@ -70,21 +70,19 @@ class GiftControllerTest extends ApiTest {
         final User user = Scenario.createUserDB().id(2L).create();
         final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
         Scenario.subscribeCalendar().calendarId(calendar.getId()).request();
-
-        final Long userId = 1L;
         final Long giftId = 1L;
-        giftService.openGift(userId, giftId);
+
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .post("/calendar/{calendarId}/gift/{giftId}/open", calendar.getId(), giftId)
+                .then()
+                .log().all()
+                .statusCode(200);
 
         final Gift gift = giftRepository.getReferenceById(giftId);
         final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, me)).orElseThrow();
 
         assertThat(giftPersonalState.isOpened()).isTrue();
-//        RestAssured.given().log().all()
-//                .header("Authorization", accessToken)
-//                .when()
-//                .get("/calendar/{calendarId}/gift/{day}/open", calendar.getId(), 1)
-//                .then()
-//                .log().all()
-//                .statusCode(200);
     }
 }
