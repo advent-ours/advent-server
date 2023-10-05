@@ -4,6 +4,9 @@ import org.springframework.http.HttpStatus;
 
 public enum ResCode {
 
+    //100: 클라이언트 예외
+    CAL100("잘못된 요청입니다.", HttpStatus.BAD_REQUEST),
+
     //200: 정상
     CAL200("정상 처리.", HttpStatus.OK),
     //300~399: 인증 예외
