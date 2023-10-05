@@ -64,6 +64,7 @@ class GiftControllerTest extends ApiTest {
     }
 
     @Test
+    @DisplayName("선물 열기 성공")
     void openGift() {
         final User user = Scenario.createUserDB().id(2L).create();
         final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
