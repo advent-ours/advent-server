@@ -5,6 +5,9 @@ import com.adventours.calendar.calendar.persistence.CalendarRepository;
 import com.adventours.calendar.calendar.persistence.SubscribeRepository;
 import com.adventours.calendar.exception.AlreadyExistCalendarException;
 import com.adventours.calendar.gift.domain.Gift;
+import com.adventours.calendar.gift.domain.GiftPersonalState;
+import com.adventours.calendar.gift.domain.GiftPersonalStatePk;
+import com.adventours.calendar.gift.persistence.GiftPersonalStateRepository;
 import com.adventours.calendar.gift.persistence.GiftRepository;
 import com.adventours.calendar.subscribe.domain.Subscribe;
 import com.adventours.calendar.subscribe.domain.SubscribePk;
@@ -26,6 +29,7 @@ public class CalendarService {
     private final GiftRepository giftRepository;
     private final UserRepository userRepository;
     private final SubscribeRepository subscribeRepository;
+    private final GiftPersonalStateRepository giftPersonalStateRepository;
 
     @Transactional
     public void createCalendar(final Long userId, final CreateCalendarRequest request) {
@@ -35,6 +39,7 @@ public class CalendarService {
     }
 
     private void init24Gifts(final Calendar calendar) {
+        //TODO: bulk Insert로 성능 개선 필요 (승현쌤 블로그나 구경가자), @batchsize로 가능할듯?
         List<Gift> gifts = new ArrayList<>(24);
         for (int i = 1; i <= 24; i++) {
             gifts.add(Gift.initOf(calendar, i));
@@ -67,6 +72,17 @@ public class CalendarService {
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException();
         }
+        init24PersonalStateData(calendar, user);
+    }
+
+    private void init24PersonalStateData(final Calendar calendar, final User user) {
+        //TODO: bulk Insert로 성능 개선 필요 (승현쌤 블로그나 구경가자), @batchsize로 가능할듯?
+        List<GiftPersonalState> giftPersonalStateList = new ArrayList<>(24);
+        List<Gift> giftList = giftRepository.findAllByCalendar(calendar);
+        for (int i = 1; i <= 24; i++) {
+            giftPersonalStateList.add(new GiftPersonalState(new GiftPersonalStatePk(giftList.get(i-1), user)));
+        }
+        giftPersonalStateRepository.saveAll(giftPersonalStateList);
     }
 
     @Transactional(readOnly = true)

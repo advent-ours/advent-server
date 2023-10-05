@@ -20,9 +20,12 @@ public class GiftPersonalState {
     @Convert(converter = TrueFalseConverter.class)
     private boolean isOpened = false;
 
-    private GiftReact react;
+    private GiftReact react = GiftReact.NONE;
 
     public GiftPersonalState() {
     }
 
+    public GiftPersonalState(final GiftPersonalStatePk giftPersonalStatePk) {
+        this.giftPersonalStatePk = giftPersonalStatePk;
+    }
 }

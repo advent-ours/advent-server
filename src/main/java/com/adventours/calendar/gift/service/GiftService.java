@@ -65,4 +65,11 @@ public class GiftService {
             );
         }).toList();
     }
+
+    public void openGift(final Long userId, final UUID calendarId, final int days) {
+        final User user = userRepository.getReferenceById(userId);
+        final Calendar calendar = calendarRepository.getReferenceById(calendarId);
+        final Gift gift = giftRepository.findByCalendarAndDays(calendar, days).orElseThrow();
+//        giftPersonalStateRepository.findBy
+    }
 }

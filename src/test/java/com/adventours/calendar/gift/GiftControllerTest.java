@@ -12,6 +12,7 @@ import com.adventours.calendar.gift.persistence.GiftPersonalStateRepository;
 import com.adventours.calendar.gift.persistence.GiftRepository;
 import com.adventours.calendar.gift.service.GiftService;
 import com.adventours.calendar.user.domain.User;
+import com.adventours.calendar.user.persistence.UserRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +33,7 @@ class GiftControllerTest extends ApiTest {
     GiftPersonalStateRepository giftPersonalStateRepository;
     @Autowired
     GiftService giftService;
+    @Autowired UserRepository userRepository;
 
     @Test
     @DisplayName("선물 생성/수정 성공")
@@ -64,6 +66,7 @@ class GiftControllerTest extends ApiTest {
 
     @Test
     void openGift() {
+        final User me = userRepository.getReferenceById(1L);
         final User user = Scenario.createUserDB().id(2L).create();
         final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
         Scenario.subscribeCalendar().calendarId(calendar.getId()).request();
@@ -72,10 +75,10 @@ class GiftControllerTest extends ApiTest {
         final Long userId = 1L;
         giftService.openGift(userId, calendar.getId(), days);
 
-        final Gift gift = giftRepository.getReferenceById(1L);
-        final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, user)).orElseThrow();
+        final Gift gift = giftRepository.findById(1L).orElseThrow();
+        final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, me)).orElseThrow();
 
-        assertThat(giftPersonalState.isOpened()).isFalse();
+        assertThat(giftPersonalState.isOpened()).isTrue();
 //        RestAssured.given().log().all()
 //                .header("Authorization", accessToken)
 //                .when()
