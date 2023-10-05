@@ -1,4 +1,4 @@
-package com.adventours.calendar.api;
+package com.adventours.calendar.calendar.api;
 
 import com.adventours.calendar.calendar.service.CreateCalendarRequest;
 import com.adventours.calendar.common.Scenario;
