@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CommonResponse<T> {
-    private StatusResponse status = new StatusResponse(ResCode.CAL200);
+    private StatusResponse status = new StatusResponse(ResCode.HBD200);
     private final T data;
 
     public CommonResponse() {

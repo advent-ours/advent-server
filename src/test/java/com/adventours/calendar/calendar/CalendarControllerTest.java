@@ -74,6 +74,7 @@ class CalendarControllerTest extends ApiTest {
     }
 
     @Test
+    @DisplayName("구독 캘린더 목록 조회 성공")
     void getSubscribeList() {
         final User user = Scenario.createUserDB().id(2L).create();
         final Calendar calendar1 = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();

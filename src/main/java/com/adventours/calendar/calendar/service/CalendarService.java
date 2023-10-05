@@ -4,6 +4,9 @@ import com.adventours.calendar.calendar.domain.Calendar;
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
 import com.adventours.calendar.calendar.persistence.SubscribeRepository;
 import com.adventours.calendar.exception.AlreadyExistCalendarException;
+import com.adventours.calendar.exception.AlreadySubscribedCalendarException;
+import com.adventours.calendar.exception.NotFoundCalendarException;
+import com.adventours.calendar.exception.NotOwnerException;
 import com.adventours.calendar.gift.domain.Gift;
 import com.adventours.calendar.gift.domain.GiftPersonalState;
 import com.adventours.calendar.gift.domain.GiftPersonalStatePk;
@@ -70,7 +73,7 @@ public class CalendarService {
         try {
             subscribeRepository.save(new Subscribe(new SubscribePk(user, calendar)));
         } catch (DataIntegrityViolationException e) {
-            throw new RuntimeException();
+            throw new AlreadySubscribedCalendarException();
         }
         init24PersonalStateData(calendar, user);
     }
@@ -94,9 +97,9 @@ public class CalendarService {
 
     @Transactional
     public void updateCalendar(final Long userId, final String calendarId, final UpdateCalendarRequest request) {
-        final Calendar calendar = calendarRepository.findById(UUID.fromString(calendarId)).orElseThrow();
+        final Calendar calendar = calendarRepository.findById(UUID.fromString(calendarId)).orElseThrow(NotFoundCalendarException::new);
         if (!calendar.isOwner(userId)) {
-            throw new RuntimeException();
+            throw new NotOwnerException();
         }
         calendar.update(request.title());
     }

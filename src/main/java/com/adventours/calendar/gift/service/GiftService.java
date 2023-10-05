@@ -2,6 +2,8 @@ package com.adventours.calendar.gift.service;
 
 import com.adventours.calendar.calendar.domain.Calendar;
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
+import com.adventours.calendar.exception.NotFoundGiftException;
+import com.adventours.calendar.exception.NotOwnerException;
 import com.adventours.calendar.gift.domain.Gift;
 import com.adventours.calendar.gift.domain.GiftPersonalState;
 import com.adventours.calendar.gift.domain.GiftPersonalStatePk;
@@ -34,12 +36,12 @@ public class GiftService {
 
     private static void validateOwnerOfGift(final long userId, final Gift gift) {
         if (!gift.getCalendar().getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("해당 캘린더의 소유자가 아닙니다.");
+            throw new NotOwnerException();
         }
     }
 
     private Gift getGift(final Long giftId) {
-        return giftRepository.findById(giftId).orElseThrow();
+        return giftRepository.findById(giftId).orElseThrow(NotFoundGiftException::new);
     }
 
     public List<GiftListResponse> getGiftList(final Long userId, final String calendarId) {

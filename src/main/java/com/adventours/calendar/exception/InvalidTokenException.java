@@ -2,6 +2,6 @@ package com.adventours.calendar.exception;
 
 public class InvalidTokenException extends BaseException {
     public InvalidTokenException() {
-        super(ResCode.CAL300);
+        super(ResCode.HBD600);
     }
 }
