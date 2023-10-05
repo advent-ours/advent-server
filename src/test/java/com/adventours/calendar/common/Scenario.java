@@ -1,7 +1,7 @@
 package com.adventours.calendar.common;
 
-import com.adventours.calendar.api.CreateCalendarApi;
-import com.adventours.calendar.api.CreateCalendarDB;
+import com.adventours.calendar.calendar.api.CreateCalendarApi;
+import com.adventours.calendar.calendar.api.CreateCalendarDB;
 import com.adventours.calendar.calendar.api.SubscribeCalendarApi;
 import com.adventours.calendar.gift.api.OpenGiftApi;
 import com.adventours.calendar.gift.api.UpdateGiftApi;

@@ -4,11 +4,13 @@ import com.adventours.calendar.calendar.domain.Calendar;
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
 import com.adventours.calendar.calendar.persistence.SubscribeRepository;
 import com.adventours.calendar.calendar.service.CalendarService;
+import com.adventours.calendar.calendar.service.UpdateCalendarRequest;
 import com.adventours.calendar.common.ApiTest;
 import com.adventours.calendar.common.Scenario;
 import com.adventours.calendar.gift.persistence.GiftRepository;
 import com.adventours.calendar.gift.service.GiftService;
 import com.adventours.calendar.user.domain.User;
+import com.adventours.calendar.user.persistence.UserRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +33,8 @@ class CalendarControllerTest extends ApiTest {
     CalendarService calendarService;
     @Autowired
     SubscribeRepository subscribeRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Test
     @DisplayName("캘린더 생성 성공")
@@ -86,5 +90,25 @@ class CalendarControllerTest extends ApiTest {
                 .then()
                 .log().all()
                 .statusCode(200);
+    }
+
+    @Test
+    @DisplayName("캘린더 수정 성공")
+    void updateCalendar() {
+        User me = userRepository.findById(1L).get();
+        Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(me).create();
+        final UpdateCalendarRequest request = new UpdateCalendarRequest("수정된 제목");
+
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .body(request)
+                .contentType("application/json")
+                .when()
+                .put("/calendar/{calendarId}", calendar.getId())
+                .then()
+                .log().all()
+                .statusCode(200);
+
+        assertThat(calendarRepository.findById(calendar.getId()).get().getTitle()).isEqualTo("수정된 제목");
     }
 }

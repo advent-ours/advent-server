@@ -1,4 +1,4 @@
-package com.adventours.calendar.api;
+package com.adventours.calendar.calendar.api;
 
 import com.adventours.calendar.calendar.domain.Calendar;
 import com.adventours.calendar.common.DBTestUtil;
@@ -31,6 +31,8 @@ public class CreateCalendarDB {
     }
 
     public Calendar create() {
+        assert uuid != null;
+        assert user != null;
         final Calendar calendar = DBTestUtil.calendarRepository.save(new Calendar(
                 uuid,
                 user,
