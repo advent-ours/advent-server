@@ -12,6 +12,7 @@ import com.adventours.calendar.user.service.UpdateNicknameRequest;
 import com.adventours.calendar.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -40,6 +41,12 @@ public class UserController {
     public ResponseEntity<CommonResponse<Void>> updateNickname(@RequestBody final UpdateNicknameRequest request) {
         final Long userId = UserContext.getContext();
         userService.updateNickname(userId, request);
+        return ResponseEntity.ok(new CommonResponse<>());
+    }
+
+    @Auth
+    @PostMapping("/logout")
+    public ResponseEntity<CommonResponse<Void>> logout() {
         return ResponseEntity.ok(new CommonResponse<>());
     }
 }
