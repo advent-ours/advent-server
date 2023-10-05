@@ -5,14 +5,22 @@ import com.adventours.calendar.calendar.persistence.CalendarRepository;
 import com.adventours.calendar.common.ApiTest;
 import com.adventours.calendar.common.Scenario;
 import com.adventours.calendar.gift.domain.Gift;
+import com.adventours.calendar.gift.domain.GiftPersonalState;
+import com.adventours.calendar.gift.domain.GiftPersonalStatePk;
 import com.adventours.calendar.gift.domain.GiftType;
+import com.adventours.calendar.gift.persistence.GiftPersonalStateRepository;
 import com.adventours.calendar.gift.persistence.GiftRepository;
 import com.adventours.calendar.gift.service.GiftService;
+import com.adventours.calendar.user.domain.User;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class GiftControllerTest extends ApiTest {
 
@@ -20,6 +28,8 @@ class GiftControllerTest extends ApiTest {
     CalendarRepository calendarRepository;
     @Autowired
     GiftRepository giftRepository;
+    @Autowired
+    GiftPersonalStateRepository giftPersonalStateRepository;
     @Autowired
     GiftService giftService;
 
@@ -31,9 +41,9 @@ class GiftControllerTest extends ApiTest {
 
         final Gift gift = giftRepository.findById(1L).get();
         Assertions.assertAll(
-                () -> org.assertj.core.api.Assertions.assertThat(gift.getTitle()).isEqualTo("제목"),
-                () -> org.assertj.core.api.Assertions.assertThat(gift.getTextBody()).isEqualTo("내용"),
-                () -> org.assertj.core.api.Assertions.assertThat(gift.getGiftType()).isEqualTo(GiftType.TEXT)
+                () -> assertThat(gift.getTitle()).isEqualTo("제목"),
+                () -> assertThat(gift.getTextBody()).isEqualTo("내용"),
+                () -> assertThat(gift.getGiftType()).isEqualTo(GiftType.TEXT)
         );
     }
 
@@ -50,5 +60,28 @@ class GiftControllerTest extends ApiTest {
                 .then()
                 .log().all()
                 .statusCode(200);
+    }
+
+    @Test
+    void openGift() {
+        final User user = Scenario.createUserDB().id(2L).create();
+        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
+        Scenario.subscribeCalendar().calendarId(calendar.getId()).request();
+
+        final int days = 1;
+        final Long userId = 1L;
+        giftService.openGift(userId, calendar.getId(), days);
+
+        final Gift gift = giftRepository.getReferenceById(1L);
+        final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, user)).orElseThrow();
+
+        assertThat(giftPersonalState.isOpened()).isFalse();
+//        RestAssured.given().log().all()
+//                .header("Authorization", accessToken)
+//                .when()
+//                .get("/calendar/{calendarId}/gift/{day}/open", calendar.getId(), 1)
+//                .then()
+//                .log().all()
+//                .statusCode(200);
     }
 }

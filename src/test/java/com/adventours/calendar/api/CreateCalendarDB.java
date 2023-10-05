@@ -2,8 +2,11 @@ package com.adventours.calendar.api;
 
 import com.adventours.calendar.calendar.domain.Calendar;
 import com.adventours.calendar.common.DBTestUtil;
+import com.adventours.calendar.gift.domain.Gift;
 import com.adventours.calendar.user.domain.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class CreateCalendarDB {
@@ -28,9 +31,15 @@ public class CreateCalendarDB {
     }
 
     public Calendar create() {
-        return DBTestUtil.calendarRepository.save(new Calendar(
+        final Calendar calendar = DBTestUtil.calendarRepository.save(new Calendar(
                 uuid,
                 user,
                 title));
+        List<Gift> gifts = new ArrayList<>(24);
+        for (int i = 1; i <= 24; i++) {
+            gifts.add(Gift.initOf(calendar, i));
+        }
+        DBTestUtil.giftRepository.saveAll(gifts);
+        return calendar;
     };
 }

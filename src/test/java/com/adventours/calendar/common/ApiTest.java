@@ -2,6 +2,7 @@ package com.adventours.calendar.common;
 
 import com.adventours.calendar.auth.JwtTokenIssuer;
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
+import com.adventours.calendar.gift.persistence.GiftRepository;
 import com.adventours.calendar.user.domain.OAuthProvider;
 import com.adventours.calendar.user.domain.User;
 import com.adventours.calendar.user.persistence.UserRepository;
@@ -25,6 +26,8 @@ public class ApiTest {
     JwtTokenIssuer jwtTokenIssuer;
     @Autowired
     CalendarRepository calendarRepository;
+    @Autowired
+    GiftRepository giftRepository;
     public static String accessToken;
 
     @BeforeEach
@@ -39,5 +42,6 @@ public class ApiTest {
 
         DBTestUtil.setUserRepository(userRepository);
         DBTestUtil.setCalendarRepository(calendarRepository);
+        DBTestUtil.setGiftRepository(giftRepository);
     }
 }
