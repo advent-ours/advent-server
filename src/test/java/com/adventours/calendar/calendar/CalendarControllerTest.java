@@ -42,7 +42,7 @@ class CalendarControllerTest extends ApiTest {
         Scenario.createCalendar().request();
         Assertions.assertAll(
                 () -> assertThat(calendarRepository.count()).isEqualTo(1),
-                () -> assertThat(giftRepository.count()).isEqualTo(24)
+                () -> assertThat(giftRepository.count()).isEqualTo(25)
         );
     }
 

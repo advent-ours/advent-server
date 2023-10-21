@@ -37,8 +37,8 @@ public class CreateCalendarDB {
                 uuid,
                 user,
                 title));
-        List<Gift> gifts = new ArrayList<>(24);
-        for (int i = 1; i <= 24; i++) {
+        List<Gift> gifts = new ArrayList<>(25);
+        for (int i = 1; i <= 25; i++) {
             gifts.add(Gift.initOf(calendar, i));
         }
         DBTestUtil.giftRepository.saveAll(gifts);
