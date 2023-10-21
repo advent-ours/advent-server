@@ -38,13 +38,13 @@ public class CalendarService {
     public void createCalendar(final Long userId, final CreateCalendarRequest request) {
         final User user = userRepository.getReferenceById(userId);
         final Calendar calendar = createCalendar(request, user);
-        init24Gifts(calendar);
+        init25Gifts(calendar);
     }
 
-    private void init24Gifts(final Calendar calendar) {
+    private void init25Gifts(final Calendar calendar) {
         //TODO: bulk Insert로 성능 개선 필요 (승현쌤 블로그나 구경가자), @batchsize로 가능할듯?
-        List<Gift> gifts = new ArrayList<>(24);
-        for (int i = 1; i <= 24; i++) {
+        List<Gift> gifts = new ArrayList<>(25);
+        for (int i = 1; i <= 25; i++) {
             gifts.add(Gift.initOf(calendar, i));
         }
         giftRepository.saveAll(gifts);
@@ -75,14 +75,14 @@ public class CalendarService {
         } catch (DataIntegrityViolationException e) {
             throw new AlreadySubscribedCalendarException();
         }
-        init24PersonalStateData(calendar, user);
+        init25PersonalStateData(calendar, user);
     }
 
-    private void init24PersonalStateData(final Calendar calendar, final User user) {
+    private void init25PersonalStateData(final Calendar calendar, final User user) {
         //TODO: bulk Insert로 성능 개선 필요 (승현쌤 블로그나 구경가자), @batchsize로 가능할듯?
-        List<GiftPersonalState> giftPersonalStateList = new ArrayList<>(24);
+        List<GiftPersonalState> giftPersonalStateList = new ArrayList<>(25);
         List<Gift> giftList = giftRepository.findAllByCalendar(calendar);
-        for (int i = 1; i <= 24; i++) {
+        for (int i = 1; i <= 25; i++) {
             giftPersonalStateList.add(new GiftPersonalState(new GiftPersonalStatePk(giftList.get(i-1), user)));
         }
         giftPersonalStateRepository.saveAll(giftPersonalStateList);
