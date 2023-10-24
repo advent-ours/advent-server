@@ -62,7 +62,8 @@ public class Calendar extends BaseTime {
         return user.getId().equals(userId);
     }
 
-    public void update(final String title) {
+    public void update(final String title, CalendarTemplate template) {
         this.title = title;
+        this.template = template;
     }
 }

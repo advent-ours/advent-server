@@ -101,6 +101,6 @@ public class CalendarService {
         if (!calendar.isOwner(userId)) {
             throw new NotOwnerException();
         }
-        calendar.update(request.title());
+        calendar.update(request.title(), request.template());
     }
 }
