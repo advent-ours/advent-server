@@ -1,6 +1,7 @@
 package com.adventours.calendar.calendar.service;
 
 import com.adventours.calendar.calendar.domain.Calendar;
+import com.adventours.calendar.calendar.domain.CalendarTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,6 +12,7 @@ public record CalendarListResponse(
         Long userId,
         String profileImgUrl,
         String title,
+        CalendarTemplate template,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
@@ -22,6 +24,7 @@ public record CalendarListResponse(
                         calendar.getUser().getId(),
                         calendar.getUser().getProfileImgUrl(),
                         calendar.getTitle(),
+                        calendar.getTemplate(),
                         calendar.getCreatedAt(),
                         calendar.getUpdatedAt()
                 )).toList();
