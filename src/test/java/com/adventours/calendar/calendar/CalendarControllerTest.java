@@ -1,6 +1,7 @@
 package com.adventours.calendar.calendar;
 
 import com.adventours.calendar.calendar.domain.Calendar;
+import com.adventours.calendar.calendar.domain.CalendarTemplate;
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
 import com.adventours.calendar.calendar.persistence.SubscribeRepository;
 import com.adventours.calendar.calendar.service.CalendarService;
@@ -98,7 +99,7 @@ class CalendarControllerTest extends ApiTest {
     void updateCalendar() {
         User me = userRepository.findById(1L).get();
         Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(me).create();
-        final UpdateCalendarRequest request = new UpdateCalendarRequest("수정된 제목");
+        final UpdateCalendarRequest request = new UpdateCalendarRequest("수정된 제목", CalendarTemplate.GREEN);
 
         RestAssured.given().log().all()
                 .header("Authorization", accessToken)
@@ -111,5 +112,6 @@ class CalendarControllerTest extends ApiTest {
                 .statusCode(200);
 
         assertThat(calendarRepository.findById(calendar.getId()).get().getTitle()).isEqualTo("수정된 제목");
+        assertThat(calendarRepository.findById(calendar.getId()).get().getTemplate()).isEqualTo(CalendarTemplate.GREEN);
     }
 }
