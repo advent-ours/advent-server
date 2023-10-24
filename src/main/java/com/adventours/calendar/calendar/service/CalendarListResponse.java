@@ -10,6 +10,7 @@ import java.util.UUID;
 public record CalendarListResponse(
         UUID id,
         Long userId,
+        String nickname,
         String profileImgUrl,
         String title,
         CalendarTemplate template,
@@ -22,6 +23,7 @@ public record CalendarListResponse(
                 .map(calendar -> new CalendarListResponse(
                         calendar.getId(),
                         calendar.getUser().getId(),
+                        calendar.getUser().getNickname(),
                         calendar.getUser().getProfileImgUrl(),
                         calendar.getTitle(),
                         calendar.getTemplate(),
