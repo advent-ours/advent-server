@@ -53,7 +53,7 @@ public class CalendarService {
     private Calendar createCalendar(final CreateCalendarRequest request, final User user) {
         final Calendar calendar;
         try {
-            calendar = calendarRepository.save(new Calendar(user, request.title()));
+            calendar = calendarRepository.save(new Calendar(user, request.title(), request.template()));
         } catch (DataIntegrityViolationException e) {
             throw new AlreadyExistCalendarException();
         }

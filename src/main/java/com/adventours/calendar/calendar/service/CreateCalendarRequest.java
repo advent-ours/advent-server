@@ -1,4 +1,6 @@
 package com.adventours.calendar.calendar.service;
 
-public record CreateCalendarRequest(String title) {
+import com.adventours.calendar.calendar.domain.CalendarTemplate;
+
+public record CreateCalendarRequest(String title, CalendarTemplate template) {
 }
