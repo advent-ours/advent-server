@@ -6,6 +6,8 @@ import com.google.common.annotations.VisibleForTesting;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
@@ -38,23 +40,30 @@ public class Calendar extends BaseTime {
     @Column(nullable = false)
     private String title;
 
-    public Calendar(final User user, final String title) {
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private CalendarTemplate template;
+
+    public Calendar(final User user, final String title, final CalendarTemplate template) {
         this.user = user;
         this.title = title;
+        this.template = template;
     }
 
     @VisibleForTesting
-    public Calendar(final UUID id, final User user, final String title) {
+    public Calendar(final UUID id, final User user, final String title, final CalendarTemplate template) {
         this.id = id;
         this.user = user;
         this.title = title;
+        this.template = template;
     }
 
     public boolean isOwner(final Long userId) {
         return user.getId().equals(userId);
     }
 
-    public void update(final String title) {
+    public void update(final String title, CalendarTemplate template) {
         this.title = title;
+        this.template = template;
     }
 }
