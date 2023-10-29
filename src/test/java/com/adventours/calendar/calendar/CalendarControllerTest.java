@@ -1,5 +1,6 @@
 package com.adventours.calendar.calendar;
 
+import com.adventours.calendar.auth.JwtTokenIssuer;
 import com.adventours.calendar.calendar.domain.Calendar;
 import com.adventours.calendar.calendar.domain.CalendarTemplate;
 import com.adventours.calendar.calendar.persistence.CalendarRepository;
@@ -37,6 +38,8 @@ class CalendarControllerTest extends ApiTest {
     SubscribeRepository subscribeRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    JwtTokenIssuer jwtTokenIssuer;
 
     @Test
     @DisplayName("캘린더 생성 성공")
@@ -64,6 +67,26 @@ class CalendarControllerTest extends ApiTest {
                 .then()
                 .log().all()
                 .statusCode(200);
+    }
+
+    @Test
+    @DisplayName("나의 캘린더 목록 조회 성공 - 구독자 필드 확인")
+    void getMyCalendarList_subscriber_count() {
+        final User user = userRepository.getReferenceById(1L);
+        final User user2 = Scenario.createUserDB().id(2L).create();
+        String user2AccessToken = jwtTokenIssuer.issueToken(user2.getId()).accessToken();
+
+        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
+        Scenario.subscribeCalendar().calendarId(calendar.getId()).customAccessToken(user2AccessToken).request();
+
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .get("/calendar/my")
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("data[0].subscriberCount", org.hamcrest.Matchers.is(1));
     }
 
     @Test

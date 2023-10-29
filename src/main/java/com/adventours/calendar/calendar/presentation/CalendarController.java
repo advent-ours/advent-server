@@ -4,6 +4,7 @@ import com.adventours.calendar.auth.Auth;
 import com.adventours.calendar.auth.UserContext;
 import com.adventours.calendar.calendar.service.CalendarService;
 import com.adventours.calendar.calendar.service.CreateCalendarRequest;
+import com.adventours.calendar.calendar.service.MyCalendarListResponse;
 import com.adventours.calendar.calendar.service.SubCalendarListResponse;
 import com.adventours.calendar.calendar.service.UpdateCalendarRequest;
 import com.adventours.calendar.global.CommonResponse;
@@ -45,9 +46,9 @@ public class CalendarController {
 
     @Auth
     @GetMapping("/my")
-    public ResponseEntity<CommonResponse<List<SubCalendarListResponse>>> getMyCalendarList() {
+    public ResponseEntity<CommonResponse<List<MyCalendarListResponse>>> getMyCalendarList() {
         final Long userId = UserContext.getContext();
-        final List<SubCalendarListResponse> myCalendarList = calendarService.getMyCalendarList(userId);
+        final List<MyCalendarListResponse> myCalendarList = calendarService.getMyCalendarList(userId);
         return ResponseEntity.ok(new CommonResponse<>(myCalendarList));
     }
 

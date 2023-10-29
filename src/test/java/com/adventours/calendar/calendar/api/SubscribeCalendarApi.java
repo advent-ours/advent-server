@@ -9,7 +9,13 @@ import static com.adventours.calendar.common.ApiTest.accessToken;
 
 public class SubscribeCalendarApi {
 
+    private String customAccessToken = accessToken;
     private UUID calendarId;
+
+    public SubscribeCalendarApi customAccessToken(String customAccessToken) {
+        this.customAccessToken = customAccessToken;
+        return this;
+    }
 
     public SubscribeCalendarApi calendarId(UUID calendarId) {
         this.calendarId = calendarId;
@@ -19,7 +25,7 @@ public class SubscribeCalendarApi {
     public Scenario request() {
         assert calendarId != null;
         RestAssured.given().log().all()
-                .header("Authorization", accessToken)
+                .header("Authorization", customAccessToken)
                 .when()
                 .post("/calendar/sub/{calendarId}", calendarId)
                 .then()
