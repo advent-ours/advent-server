@@ -15,6 +15,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Entity
 @Table(name = "GIFT")
@@ -29,7 +31,7 @@ public class Gift extends BaseTime {
     private Calendar calendar;
 
     @Column(nullable = false)
-    private int days;
+    private LocalDateTime openAt;
 
     //TODO: Enum으로 제공
     @Column(nullable = false)
@@ -44,14 +46,14 @@ public class Gift extends BaseTime {
     public Gift() {
     }
 
-    public Gift(final Calendar calendar, final int days, final GiftType giftType) {
+    public Gift(final Calendar calendar, final LocalDateTime openAt, final GiftType giftType) {
         this.calendar = calendar;
-        this.days = days;
+        this.openAt = openAt;
         this.giftType = giftType;
     }
 
-    public static Gift initOf(final Calendar calendar, final int days) {
-        return new Gift(calendar, days, GiftType.INIT);
+    public static Gift initOf(final Calendar calendar, final LocalDateTime openAt) {
+        return new Gift(calendar, openAt, GiftType.INIT);
     }
 
     public void updateContent(final GiftType giftType, final String title, final String textBody, final String contentUrl) {

@@ -6,6 +6,7 @@ import com.adventours.calendar.common.DBTestUtil;
 import com.adventours.calendar.gift.domain.Gift;
 import com.adventours.calendar.user.domain.User;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -46,8 +47,15 @@ public class CreateCalendarDB {
                 title,
                 template));
         List<Gift> gifts = new ArrayList<>(25);
+        LocalDateTime now = LocalDateTime.now()
+                .withDayOfMonth(1)
+                .withMonth(12)
+                .withHour(0)
+                .withMinute(0)
+                .withSecond(0)
+                .withNano(0);
         for (int i = 1; i <= 25; i++) {
-            gifts.add(Gift.initOf(calendar, i));
+            gifts.add(Gift.initOf(calendar, now.withDayOfMonth(i)));
         }
         DBTestUtil.giftRepository.saveAll(gifts);
         return calendar;

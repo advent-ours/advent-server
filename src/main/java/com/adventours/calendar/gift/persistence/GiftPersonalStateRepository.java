@@ -14,8 +14,9 @@ public interface GiftPersonalStateRepository extends JpaRepository<GiftPersonalS
             "join gift g " +
             "on ps.gift_id = g.gift_id " +
             "where g.calendar_id = :calendarId " +
+            "and g.days <= :todayDate " +
             "and ps.user_id = :userId " +
-            "and ps.is_opened = 'F' ",
+            "and ps.is_opened = 'F'",
             nativeQuery = true)
-    Long countNotOpenedGift(UUID calendarId, Long userId);
+    Long countNotOpenedGift(UUID calendarId, Long userId, int todayDate);
 }

@@ -21,6 +21,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -44,8 +45,15 @@ public class CalendarService {
     private void init25Gifts(final Calendar calendar) {
         //TODO: bulk Insert로 성능 개선 필요 (승현쌤 블로그나 구경가자), @batchsize로 가능할듯?
         List<Gift> gifts = new ArrayList<>(25);
+        LocalDateTime now = LocalDateTime.now()
+                .withDayOfMonth(1)
+                .withMonth(12)
+                .withHour(0)
+                .withMinute(0)
+                .withSecond(0)
+                .withNano(0);
         for (int i = 1; i <= 25; i++) {
-            gifts.add(Gift.initOf(calendar, i));
+            gifts.add(Gift.initOf(calendar, now.withDayOfMonth(i)));
         }
         giftRepository.saveAll(gifts);
     }
@@ -75,6 +83,9 @@ public class CalendarService {
     }
 
     private List<SubCalendarListResponse> createResponseWithNotOpenedGiftCount(List<Calendar> calendarList, User user) {
+        LocalDateTime now = LocalDateTime.now();
+        //TOOD: 2024년 운영을 위해서 변경 필요 -> 연도 캐싱하는게 좋을 듯
+        int todayDate = now.getYear() == 2023 ? 25 : now.getDayOfMonth();
         return calendarList.stream()
                 .map(calendar -> new SubCalendarListResponse(
                         calendar.getId(),
@@ -82,7 +93,7 @@ public class CalendarService {
                         calendar.getUser().getNickname(),
                         calendar.getUser().getProfileImgUrl(),
                         calendar.getTitle(),
-                        giftPersonalStateRepository.countNotOpenedGift(calendar.getId(), user.getId()),
+                        giftPersonalStateRepository.countNotOpenedGift(calendar.getId(), user.getId(), todayDate),
                         calendar.getTemplate(),
                         calendar.getCreatedAt(),
                         calendar.getUpdatedAt()
