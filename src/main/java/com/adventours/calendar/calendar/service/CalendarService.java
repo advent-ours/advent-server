@@ -82,10 +82,8 @@ public class CalendarService {
         return createResponseWithNotOpenedGiftCount(calendarList, user);
     }
 
-    private List<SubCalendarListResponse> createResponseWithNotOpenedGiftCount(List<Calendar> calendarList, User user) {
-        LocalDateTime now = LocalDateTime.now();
-        //TOOD: 2024년 운영을 위해서 변경 필요 -> 연도 캐싱하는게 좋을 듯
-        int todayDate = now.getYear() == 2023 ? 25 : now.getDayOfMonth();
+    private List<SubCalendarListResponse> createResponseWithNotOpenedGiftCount(final List<Calendar> calendarList, final User user) {
+        final LocalDateTime now = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59);
         return calendarList.stream()
                 .map(calendar -> new SubCalendarListResponse(
                         calendar.getId(),
@@ -93,7 +91,7 @@ public class CalendarService {
                         calendar.getUser().getNickname(),
                         calendar.getUser().getProfileImgUrl(),
                         calendar.getTitle(),
-                        giftPersonalStateRepository.countNotOpenedGift(calendar.getId(), user.getId(), todayDate),
+                        giftPersonalStateRepository.countNotOpenedGift(calendar.getId(), user.getId(), now),
                         calendar.getTemplate(),
                         calendar.getCreatedAt(),
                         calendar.getUpdatedAt()

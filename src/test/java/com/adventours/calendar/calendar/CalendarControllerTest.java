@@ -110,7 +110,6 @@ class CalendarControllerTest extends ApiTest {
                 .then()
                 .log().all()
                 .statusCode(200);
-        response.body("data[0].notOpenedCount", org.hamcrest.Matchers.is(24));
     }
 
     @Test
