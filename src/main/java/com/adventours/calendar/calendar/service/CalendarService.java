@@ -71,10 +71,10 @@ public class CalendarService {
     public List<SubCalendarListResponse> getSubscribeList(final Long userId) {
         final User user = userRepository.getReferenceById(userId);
         List<Calendar> calendarList = calendarRepository.findAllBySubscriber(user);
-        return createResponseWithNotReadGiftCount(calendarList, user);
+        return createResponseWithNotOpenedGiftCount(calendarList, user);
     }
 
-    private List<SubCalendarListResponse> createResponseWithNotReadGiftCount(List<Calendar> calendarList, User user) {
+    private List<SubCalendarListResponse> createResponseWithNotOpenedGiftCount(List<Calendar> calendarList, User user) {
         return calendarList.stream()
                 .map(calendar -> new SubCalendarListResponse(
                         calendar.getId(),
@@ -82,7 +82,7 @@ public class CalendarService {
                         calendar.getUser().getNickname(),
                         calendar.getUser().getProfileImgUrl(),
                         calendar.getTitle(),
-                        giftPersonalStateRepository.countNotReadGift(calendar.getId().toString(), user.getId()),
+                        giftPersonalStateRepository.countNotOpenedGift(calendar.getId(), user.getId()),
                         calendar.getTemplate(),
                         calendar.getCreatedAt(),
                         calendar.getUpdatedAt()

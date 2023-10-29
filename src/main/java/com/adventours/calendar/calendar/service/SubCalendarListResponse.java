@@ -13,7 +13,7 @@ public record SubCalendarListResponse(
         String nickname,
         String profileImgUrl,
         String title,
-        Long notReadCount,
+        Long notOpenedCount,
         CalendarTemplate template,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
