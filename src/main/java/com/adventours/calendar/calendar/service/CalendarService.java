@@ -61,10 +61,32 @@ public class CalendarService {
     }
 
     @Transactional(readOnly = true)
-    public List<CalendarListResponse> getMyCalendarList(final Long userId) {
+    public List<SubCalendarListResponse> getMyCalendarList(final Long userId) {
         final User user = userRepository.getReferenceById(userId);
         final List<Calendar> calendarList = calendarRepository.findAllByUser(user);
-        return CalendarListResponse.toListForResponse(calendarList);
+        return SubCalendarListResponse.toListForResponse(calendarList);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SubCalendarListResponse> getSubscribeList(final Long userId) {
+        final User user = userRepository.getReferenceById(userId);
+        List<Calendar> calendarList = calendarRepository.findAllBySubscriber(user);
+        return createResponseWithNotReadGiftCount(calendarList, user);
+    }
+
+    private List<SubCalendarListResponse> createResponseWithNotReadGiftCount(List<Calendar> calendarList, User user) {
+        return calendarList.stream()
+                .map(calendar -> new SubCalendarListResponse(
+                        calendar.getId(),
+                        calendar.getUser().getId(),
+                        calendar.getUser().getNickname(),
+                        calendar.getUser().getProfileImgUrl(),
+                        calendar.getTitle(),
+                        giftPersonalStateRepository.countNotReadGift(calendar.getId().toString(), user.getId()),
+                        calendar.getTemplate(),
+                        calendar.getCreatedAt(),
+                        calendar.getUpdatedAt()
+                )).toList();
     }
 
     public void subscribe(final Long userId, final String calendarId) {
@@ -78,6 +100,15 @@ public class CalendarService {
         init25PersonalStateData(calendar, user);
     }
 
+    @Transactional
+    public void updateCalendar(final Long userId, final String calendarId, final UpdateCalendarRequest request) {
+        final Calendar calendar = calendarRepository.findById(UUID.fromString(calendarId)).orElseThrow(NotFoundCalendarException::new);
+        if (!calendar.isOwner(userId)) {
+            throw new NotOwnerException();
+        }
+        calendar.update(request.title(), request.template());
+    }
+
     private void init25PersonalStateData(final Calendar calendar, final User user) {
         //TODO: bulk Insert로 성능 개선 필요 (승현쌤 블로그나 구경가자), @batchsize로 가능할듯?
         List<GiftPersonalState> giftPersonalStateList = new ArrayList<>(25);
@@ -86,21 +117,5 @@ public class CalendarService {
             giftPersonalStateList.add(new GiftPersonalState(new GiftPersonalStatePk(giftList.get(i-1), user)));
         }
         giftPersonalStateRepository.saveAll(giftPersonalStateList);
-    }
-
-    @Transactional(readOnly = true)
-    public List<CalendarListResponse> getSubscribeList(final Long userId) {
-        final User user = userRepository.getReferenceById(userId);
-        List<Calendar> calendarList = calendarRepository.findAllBySubscriber(user);
-        return CalendarListResponse.toListForResponse(calendarList);
-    }
-
-    @Transactional
-    public void updateCalendar(final Long userId, final String calendarId, final UpdateCalendarRequest request) {
-        final Calendar calendar = calendarRepository.findById(UUID.fromString(calendarId)).orElseThrow(NotFoundCalendarException::new);
-        if (!calendar.isOwner(userId)) {
-            throw new NotOwnerException();
-        }
-        calendar.update(request.title(), request.template());
     }
 }

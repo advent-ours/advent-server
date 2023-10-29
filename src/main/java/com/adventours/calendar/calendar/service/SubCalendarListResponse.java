@@ -7,25 +7,27 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public record CalendarListResponse(
+public record SubCalendarListResponse(
         UUID id,
         Long userId,
         String nickname,
         String profileImgUrl,
         String title,
+        Long notReadCount,
         CalendarTemplate template,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
 
-    static List<CalendarListResponse> toListForResponse(List<Calendar> calendars) {
+    static List<SubCalendarListResponse> toListForResponse(List<Calendar> calendars) {
         return calendars.stream()
-                .map(calendar -> new CalendarListResponse(
+                .map(calendar -> new SubCalendarListResponse(
                         calendar.getId(),
                         calendar.getUser().getId(),
                         calendar.getUser().getNickname(),
                         calendar.getUser().getProfileImgUrl(),
                         calendar.getTitle(),
+                        0L,
                         calendar.getTemplate(),
                         calendar.getCreatedAt(),
                         calendar.getUpdatedAt()
