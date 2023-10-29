@@ -21,6 +21,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -44,8 +45,15 @@ public class CalendarService {
     private void init25Gifts(final Calendar calendar) {
         //TODO: bulk Insert로 성능 개선 필요 (승현쌤 블로그나 구경가자), @batchsize로 가능할듯?
         List<Gift> gifts = new ArrayList<>(25);
+        LocalDateTime now = LocalDateTime.now()
+                .withDayOfMonth(1)
+                .withMonth(12)
+                .withHour(0)
+                .withMinute(0)
+                .withSecond(0)
+                .withNano(0);
         for (int i = 1; i <= 25; i++) {
-            gifts.add(Gift.initOf(calendar, i));
+            gifts.add(Gift.initOf(calendar, now.withDayOfMonth(i)));
         }
         giftRepository.saveAll(gifts);
     }
@@ -61,10 +69,33 @@ public class CalendarService {
     }
 
     @Transactional(readOnly = true)
-    public List<CalendarListResponse> getMyCalendarList(final Long userId) {
+    public List<SubCalendarListResponse> getMyCalendarList(final Long userId) {
         final User user = userRepository.getReferenceById(userId);
         final List<Calendar> calendarList = calendarRepository.findAllByUser(user);
-        return CalendarListResponse.toListForResponse(calendarList);
+        return SubCalendarListResponse.toListForResponse(calendarList);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SubCalendarListResponse> getSubscribeList(final Long userId) {
+        final User user = userRepository.getReferenceById(userId);
+        List<Calendar> calendarList = calendarRepository.findAllBySubscriber(user);
+        return createResponseWithNotOpenedGiftCount(calendarList, user);
+    }
+
+    private List<SubCalendarListResponse> createResponseWithNotOpenedGiftCount(final List<Calendar> calendarList, final User user) {
+        final LocalDateTime now = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59);
+        return calendarList.stream()
+                .map(calendar -> new SubCalendarListResponse(
+                        calendar.getId(),
+                        calendar.getUser().getId(),
+                        calendar.getUser().getNickname(),
+                        calendar.getUser().getProfileImgUrl(),
+                        calendar.getTitle(),
+                        giftPersonalStateRepository.countNotOpenedGift(calendar.getId(), user.getId(), now),
+                        calendar.getTemplate(),
+                        calendar.getCreatedAt(),
+                        calendar.getUpdatedAt()
+                )).toList();
     }
 
     public void subscribe(final Long userId, final String calendarId) {
@@ -78,6 +109,15 @@ public class CalendarService {
         init25PersonalStateData(calendar, user);
     }
 
+    @Transactional
+    public void updateCalendar(final Long userId, final String calendarId, final UpdateCalendarRequest request) {
+        final Calendar calendar = calendarRepository.findById(UUID.fromString(calendarId)).orElseThrow(NotFoundCalendarException::new);
+        if (!calendar.isOwner(userId)) {
+            throw new NotOwnerException();
+        }
+        calendar.update(request.title(), request.template());
+    }
+
     private void init25PersonalStateData(final Calendar calendar, final User user) {
         //TODO: bulk Insert로 성능 개선 필요 (승현쌤 블로그나 구경가자), @batchsize로 가능할듯?
         List<GiftPersonalState> giftPersonalStateList = new ArrayList<>(25);
@@ -86,21 +126,5 @@ public class CalendarService {
             giftPersonalStateList.add(new GiftPersonalState(new GiftPersonalStatePk(giftList.get(i-1), user)));
         }
         giftPersonalStateRepository.saveAll(giftPersonalStateList);
-    }
-
-    @Transactional(readOnly = true)
-    public List<CalendarListResponse> getSubscribeList(final Long userId) {
-        final User user = userRepository.getReferenceById(userId);
-        List<Calendar> calendarList = calendarRepository.findAllBySubscriber(user);
-        return CalendarListResponse.toListForResponse(calendarList);
-    }
-
-    @Transactional
-    public void updateCalendar(final Long userId, final String calendarId, final UpdateCalendarRequest request) {
-        final Calendar calendar = calendarRepository.findById(UUID.fromString(calendarId)).orElseThrow(NotFoundCalendarException::new);
-        if (!calendar.isOwner(userId)) {
-            throw new NotOwnerException();
-        }
-        calendar.update(request.title(), request.template());
     }
 }

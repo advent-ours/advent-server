@@ -49,14 +49,13 @@ public class GiftService {
         final Calendar calendar = calendarRepository.getReferenceById(UUID.fromString(calendarId));
         final List<Gift> giftList = giftRepository.findByCalendar(calendar);
         return giftList.stream().map(gift -> {
-            //TODO: 구독 활성화 시 해당 필드 활성화
-//            final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, user)).orElseThrow();
-            final GiftPersonalState giftPersonalState = new GiftPersonalState();
+            final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(
+                    new GiftPersonalStatePk(gift, user)).orElse(new GiftPersonalState());
             final boolean isOpened = giftPersonalState.isOpened();
             final GiftReact react = giftPersonalState.getReact();
             return new GiftListResponse(
                     gift.getId(),
-                    gift.getDays(),
+                    gift.getOpenAt(),
                     gift.getGiftType(),
                     gift.getTitle(),
                     gift.getTextBody(),

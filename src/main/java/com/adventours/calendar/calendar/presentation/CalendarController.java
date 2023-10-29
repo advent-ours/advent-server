@@ -2,9 +2,9 @@ package com.adventours.calendar.calendar.presentation;
 
 import com.adventours.calendar.auth.Auth;
 import com.adventours.calendar.auth.UserContext;
-import com.adventours.calendar.calendar.service.CalendarListResponse;
 import com.adventours.calendar.calendar.service.CalendarService;
 import com.adventours.calendar.calendar.service.CreateCalendarRequest;
+import com.adventours.calendar.calendar.service.SubCalendarListResponse;
 import com.adventours.calendar.calendar.service.UpdateCalendarRequest;
 import com.adventours.calendar.global.CommonResponse;
 import lombok.RequiredArgsConstructor;
@@ -45,17 +45,17 @@ public class CalendarController {
 
     @Auth
     @GetMapping("/my")
-    public ResponseEntity<CommonResponse<List<CalendarListResponse>>> getMyCalendarList() {
+    public ResponseEntity<CommonResponse<List<SubCalendarListResponse>>> getMyCalendarList() {
         final Long userId = UserContext.getContext();
-        final List<CalendarListResponse> myCalendarList = calendarService.getMyCalendarList(userId);
+        final List<SubCalendarListResponse> myCalendarList = calendarService.getMyCalendarList(userId);
         return ResponseEntity.ok(new CommonResponse<>(myCalendarList));
     }
 
     @Auth
     @GetMapping("/sub")
-    public ResponseEntity<CommonResponse<List<CalendarListResponse>>> getSubscribeList() {
+    public ResponseEntity<CommonResponse<List<SubCalendarListResponse>>> getSubscribeList() {
         final Long userId = UserContext.getContext();
-        final List<CalendarListResponse> myCalendarList = calendarService.getSubscribeList(userId);
+        final List<SubCalendarListResponse> myCalendarList = calendarService.getSubscribeList(userId);
         return ResponseEntity.ok(new CommonResponse<>(myCalendarList));
     }
 

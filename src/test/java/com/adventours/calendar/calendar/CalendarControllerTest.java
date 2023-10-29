@@ -13,6 +13,7 @@ import com.adventours.calendar.gift.service.GiftService;
 import com.adventours.calendar.user.domain.User;
 import com.adventours.calendar.user.persistence.UserRepository;
 import io.restassured.RestAssured;
+import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -86,6 +87,23 @@ class CalendarControllerTest extends ApiTest {
                 .subscribeCalendar().calendarId(calendar3.getId()).request();
 
         RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .get("/calendar/sub")
+                .then()
+                .log().all()
+                .statusCode(200);
+    }
+
+    @Test
+    @DisplayName("구독 캘린더 목록 조회 성공 - 읽지 않은 선물의 개수가 컬럼으로 확인된다")
+    void getSubscribeList_not_read_gifts_count() {
+        final User user = Scenario.createUserDB().id(2L).create();
+        final Calendar calendar1 = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
+        Scenario.subscribeCalendar().calendarId(calendar1.getId()).request()
+                .openGift().calendarId(calendar1.getId().toString()).request();
+
+        ValidatableResponse response = RestAssured.given().log().all()
                 .header("Authorization", accessToken)
                 .when()
                 .get("/calendar/sub")

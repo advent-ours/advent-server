@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public record GiftListResponse(
         Long giftId,
-        int days,
+        LocalDateTime openAt,
         GiftType giftType,
         String title,
         String textBody,
