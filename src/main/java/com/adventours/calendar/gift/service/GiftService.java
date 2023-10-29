@@ -49,7 +49,8 @@ public class GiftService {
         final Calendar calendar = calendarRepository.getReferenceById(UUID.fromString(calendarId));
         final List<Gift> giftList = giftRepository.findByCalendar(calendar);
         return giftList.stream().map(gift -> {
-            final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, user)).orElseThrow();
+            final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(
+                    new GiftPersonalStatePk(gift, user)).orElse(new GiftPersonalState());
             final boolean isOpened = giftPersonalState.isOpened();
             final GiftReact react = giftPersonalState.getReact();
             return new GiftListResponse(
