@@ -69,10 +69,25 @@ public class CalendarService {
     }
 
     @Transactional(readOnly = true)
-    public List<SubCalendarListResponse> getMyCalendarList(final Long userId) {
+    public List<MyCalendarListResponse> getMyCalendarList(final Long userId) {
         final User user = userRepository.getReferenceById(userId);
         final List<Calendar> calendarList = calendarRepository.findAllByUser(user);
-        return SubCalendarListResponse.toListForResponse(calendarList);
+        return createResponseWithSubscriberCount(calendarList, user);
+    }
+
+    private List<MyCalendarListResponse> createResponseWithSubscriberCount(final List<Calendar> calendarList, final User user) {
+        return calendarList.stream()
+                .map(calendar -> new MyCalendarListResponse(
+                        calendar.getId(),
+                        calendar.getUser().getId(),
+                        calendar.getUser().getNickname(),
+                        calendar.getUser().getProfileImgUrl(),
+                        calendar.getTitle(),
+                        subscribeRepository.countByCalendar(calendar),
+                        calendar.getTemplate(),
+                        calendar.getCreatedAt(),
+                        calendar.getUpdatedAt()
+                )).toList();
     }
 
     @Transactional(readOnly = true)
