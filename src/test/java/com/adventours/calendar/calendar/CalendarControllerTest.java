@@ -16,6 +16,7 @@ import com.adventours.calendar.user.persistence.UserRepository;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,19 @@ class CalendarControllerTest extends ApiTest {
     UserRepository userRepository;
     @Autowired
     JwtTokenIssuer jwtTokenIssuer;
+
+    @Test
+    @Disabled
+    @DisplayName("Presigned URL 생성 성공")
+    void generatePresignedUrl() {
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .get("/calendar/presigned-url?file-extension=jpg")
+                .then()
+                .log().all()
+                .statusCode(200);
+    }
 
     @Test
     @DisplayName("캘린더 생성 성공")

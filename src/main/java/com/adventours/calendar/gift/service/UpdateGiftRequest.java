@@ -6,5 +6,7 @@ public record UpdateGiftRequest(
         GiftType giftType,
         String title,
         String textBody,
-        String contentUrl) {
+        String link,
+        String uploadKey,
+        String extension) {
 }

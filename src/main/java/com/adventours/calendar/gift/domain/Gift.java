@@ -56,7 +56,11 @@ public class Gift extends BaseTime {
         return new Gift(calendar, openAt, GiftType.INIT);
     }
 
-    public void updateContent(final GiftType giftType, final String title, final String textBody, final String contentUrl) {
+    public void updateContent(
+            final GiftType giftType,
+            final String title,
+            final String textBody,
+            final String contentUrl) {
         this.giftType = giftType;
         this.title = title;
         this.textBody = textBody;
