@@ -20,3 +20,13 @@ jwt:
   access-token:
     expire-length: 3600000
     secret: secretsecretsecretsecretsecretsecretsecretsecretsecretsecret
+
+cloud:
+  aws:
+    credentials:
+      access-key: test
+      secret-key: test
+    region:
+      static: test
+    stack:
+      auto: false
