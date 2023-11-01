@@ -13,7 +13,9 @@ public class UpdateGiftApi {
 
     private String title = "제목";
     private String textBody = "내용";
-    private String contentUrl = null;
+    private String link;
+    private String uploadKey;
+    private String extension;
 
     public UpdateGiftApi calendarId(final long calendarId) {
         this.calendarId = calendarId;
@@ -40,19 +42,29 @@ public class UpdateGiftApi {
         return this;
     }
 
-    public UpdateGiftApi contentUrl(final String contentUrl) {
-        this.contentUrl = contentUrl;
+    public UpdateGiftApi link(final String link) {
+        this.link = link;
         return this;
     }
 
+    public UpdateGiftApi uploadKey(final String uploadKey) {
+        this.uploadKey = uploadKey;
+        return this;
+    }
 
+    public UpdateGiftApi extension(final String extension) {
+        this.extension = extension;
+        return this;
+    }
 
     public void request() {
         final UpdateGiftRequest request = new UpdateGiftRequest(
                 giftType,
                 title,
                 textBody,
-                contentUrl
+                link,
+                uploadKey,
+                extension
         );
 
         RestAssured.given().log().all()
