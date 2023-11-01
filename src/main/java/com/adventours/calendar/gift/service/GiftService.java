@@ -13,6 +13,7 @@ import com.adventours.calendar.gift.persistence.GiftRepository;
 import com.adventours.calendar.user.domain.User;
 import com.adventours.calendar.user.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +28,24 @@ public class GiftService {
     private final GiftPersonalStateRepository giftPersonalStateRepository;
     private final UserRepository userRepository;
 
+    @Value("${cloud.aws.s3.media-url}")
+    private String s3MediaUrl;
+
     @Transactional
     public void updateGift(final long userId, final long giftId, final UpdateGiftRequest request) {
         final Gift gift = getGift(giftId);
         validateOwnerOfGift(userId, gift);
-        gift.updateContent(request.giftType(), request.title(), request.textBody(), request.contentUrl());
+        gift.updateContent(
+                request.giftType(),
+                request.title(),
+                request.textBody(),
+                request.uploadKey() == null
+                        ? gift.getContentUrl()
+                        : createContentUrl(request.uploadKey(), request.extension()));
+    }
+
+    private String createContentUrl(String uploadKey, String extension) {
+        return s3MediaUrl + uploadKey + "." + extension;
     }
 
     private static void validateOwnerOfGift(final long userId, final Gift gift) {
