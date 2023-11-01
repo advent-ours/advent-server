@@ -30,3 +30,5 @@ cloud:
       static: test
     stack:
       auto: false
+    s3:
+      bucket: test

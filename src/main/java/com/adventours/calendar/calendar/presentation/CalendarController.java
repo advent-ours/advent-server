@@ -2,11 +2,13 @@ package com.adventours.calendar.calendar.presentation;
 
 import com.adventours.calendar.auth.Auth;
 import com.adventours.calendar.auth.UserContext;
+import com.adventours.calendar.calendar.service.AwsS3Service;
 import com.adventours.calendar.calendar.service.CalendarService;
 import com.adventours.calendar.calendar.service.CreateCalendarRequest;
 import com.adventours.calendar.calendar.service.MyCalendarListResponse;
 import com.adventours.calendar.calendar.service.SubCalendarListResponse;
 import com.adventours.calendar.calendar.service.UpdateCalendarRequest;
+import com.adventours.calendar.calendar.service.UploadKeyResponse;
 import com.adventours.calendar.global.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,6 +30,13 @@ import java.util.List;
 public class CalendarController {
 
     private final CalendarService calendarService;
+    private final AwsS3Service awsS3Service;
+
+    @Auth
+    @GetMapping("/presigned-url")
+    public ResponseEntity<CommonResponse<UploadKeyResponse>> getPresignedUrl(@RequestParam(name = "file-extension") String fileExtension) {
+        return ResponseEntity.ok(new CommonResponse<>(awsS3Service.getPresignedUrl(fileExtension)));
+    }
 
     @Auth
     @PostMapping
