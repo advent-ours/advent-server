@@ -27,8 +27,8 @@ cloud:
       access-key: test
       secret-key: test
     region:
-      static: test
+      static: ap-northeast-2
     stack:
       auto: false
     s3:
-      bucket: test
+      bucket: giftmediabucket

@@ -19,3 +19,15 @@ jwt:
   access-token:
     expire-length: ${jwt_access_token_expire_length}
     secret: ${jwt_access_token_secret}
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${aws_credentials_access_key}
+      secret-key: ${aws_credentials_secret_key}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    s3:
+      bucket: giftmediabucket
