@@ -26,9 +26,9 @@ cloud:
       access-key: ${aws_credentials_access_key}
       secret-key: ${aws_credentials_secret_key}
     region:
-      static: ap-northeast-2
+      static: ${aws_region_static}
     stack:
       auto: false
     s3:
-      bucket: giftmediabucket
-      media-url: https://giftmediabucket.s3.ap-northeast-2.amazonaws.com/
+      bucket: ${aws_s3_bucket}
+      media-url: ${aws_s3_media_url}
