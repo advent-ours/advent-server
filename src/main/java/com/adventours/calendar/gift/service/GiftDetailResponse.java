@@ -13,7 +13,7 @@ public record GiftDetailResponse(
         String contentUrl,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        Boolean isMyGift,
+        Boolean isMyCalendar,
         Boolean isReacted,
         Long reactCount
 ) {

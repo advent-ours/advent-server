@@ -26,7 +26,7 @@ public interface GiftPersonalStateRepository extends JpaRepository<GiftPersonalS
             "select count(*) " +
                     "from gift_personal_state " +
                     "where gift_id = :giftId " +
-                    "and react = true",
+                    "and is_reacted = true",
             nativeQuery = true)
     Long countReactedCountByGiftId(Long giftId);
 }

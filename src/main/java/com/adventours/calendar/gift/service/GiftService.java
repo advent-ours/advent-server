@@ -78,9 +78,13 @@ public class GiftService {
     public GiftDetailResponse getGiftDetail(Long userId, Long giftId) {
         final User user = userRepository.getReferenceById(userId);
         final Gift gift = giftRepository.findById(giftId).orElseThrow(NotFoundGiftException::new);
-        final boolean isMyGift = gift.getCalendar().getUser().equals(user);
-        final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, user)).orElse(new GiftPersonalState());
-        giftPersonalState.open();
+        final boolean isMyCalendar = gift.getCalendar().getUser().equals(user);
+        boolean isReacted = false;
+        if (!isMyCalendar) {
+            final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, user)).orElse(new GiftPersonalState());
+            giftPersonalState.open();
+            isReacted = giftPersonalState.isReacted();
+        }
         return new GiftDetailResponse(
                 gift.getId(),
                 gift.getOpenAt(),
@@ -90,9 +94,9 @@ public class GiftService {
                 gift.getContentUrl(),
                 gift.getCreatedAt(),
                 gift.getUpdatedAt(),
-                isMyGift,
-                giftPersonalState.isReacted(),
-                isMyGift ? giftPersonalStateRepository.countReactedCountByGiftId(gift.getId()) : null
+                isMyCalendar,
+                isReacted,
+                isMyCalendar ? giftPersonalStateRepository.countReactedCountByGiftId(gift.getId()) : null
         );
     }
 }
