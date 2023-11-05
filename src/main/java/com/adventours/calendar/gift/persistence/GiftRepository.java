@@ -10,4 +10,6 @@ public interface GiftRepository extends JpaRepository<Gift, Long> {
     List<Gift> findByCalendar(Calendar calendar);
 
     List<Gift> findAllByCalendar(Calendar calendar);
+
+    void deleteAllByCalendar(Calendar calendar);
 }
