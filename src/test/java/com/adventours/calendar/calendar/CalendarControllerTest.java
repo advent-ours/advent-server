@@ -66,6 +66,23 @@ class CalendarControllerTest extends ApiTest {
     }
 
     @Test
+    @DisplayName("캘린더 삭제 성공")
+    void deleteCalendar() {
+        final User user = userRepository.getReferenceById(1L);
+        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
+
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .delete("/calendar/{calendarId}", calendar.getId())
+                .then()
+                .log().all()
+                .statusCode(200);
+
+        assertThat(calendarRepository.count()).isZero();
+    }
+
+    @Test
     @DisplayName("나의 캘린더 목록 조회 성공")
     void getMyCalendarList() {
         Scenario.createCalendar().title("캘린더1").request()
