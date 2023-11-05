@@ -75,14 +75,6 @@ public class GiftService {
     }
 
     @Transactional
-    public void openGift(final Long userId, final Long giftId) {
-        final User user = userRepository.getReferenceById(userId);
-        final Gift gift = giftRepository.getReferenceById(giftId);
-        final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, user)).orElseThrow();
-        giftPersonalState.open();
-    }
-
-    @Transactional
     public GiftDetailResponse getGiftDetail(Long userId, Long giftId) {
         final User user = userRepository.getReferenceById(userId);
         final Gift gift = giftRepository.findById(giftId).orElseThrow(NotFoundGiftException::new);
