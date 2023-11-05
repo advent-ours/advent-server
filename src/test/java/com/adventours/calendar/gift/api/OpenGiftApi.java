@@ -24,7 +24,7 @@ public class OpenGiftApi {
         RestAssured.given().log().all()
                 .header("Authorization", accessToken)
                 .when()
-                .post("/calendar/{calendarId}/gift/{giftId}/open", calendarId, giftId)
+                .get("/calendar/{calendarId}/gift/{giftId}", calendarId, giftId)
                 .then()
                 .log().all()
                 .statusCode(200);

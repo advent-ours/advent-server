@@ -64,8 +64,8 @@ class GiftControllerTest extends ApiTest {
     }
 
     @Test
-    @DisplayName("선물 열기 성공")
-    void openGift() {
+    @DisplayName("구독한 선물 열기 성공")
+    void openGift_sub() {
         final User user = Scenario.createUserDB().id(2L).create();
         final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
         Scenario.subscribeCalendar().calendarId(calendar.getId()).request().
@@ -74,5 +74,14 @@ class GiftControllerTest extends ApiTest {
         final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findAll().get(0);
 
         assertThat(giftPersonalState.isOpened()).isTrue();
+    }
+
+    @Test
+    @DisplayName("내 선물 열기 성공")
+    void openGift_my() {
+        final User user = userRepository.getReferenceById(1L);
+        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
+        Scenario.subscribeCalendar().calendarId(calendar.getId()).request().
+                openGift().calendarId(calendar.getTitle()).request();
     }
 }

@@ -2,6 +2,7 @@ package com.adventours.calendar.gift.presentation;
 
 import com.adventours.calendar.auth.Auth;
 import com.adventours.calendar.auth.UserContext;
+import com.adventours.calendar.gift.service.GiftDetailResponse;
 import com.adventours.calendar.gift.service.GiftListResponse;
 import com.adventours.calendar.gift.service.GiftService;
 import com.adventours.calendar.gift.service.UpdateGiftRequest;
@@ -40,11 +41,11 @@ public class GiftController {
     }
 
     @Auth
-    @PostMapping("/calendar/{calendarId}/gift/{giftId}/open")
-    public ResponseEntity<CommonResponse<Void>> openGift(@PathVariable final String calendarId, @PathVariable final Long giftId) {
+    @GetMapping("/calendar/{calendarId}/gift/{giftId}")
+    public ResponseEntity<CommonResponse<GiftDetailResponse>> getGiftDetail(@PathVariable final String calendarId,
+                                                                            @PathVariable final Long giftId) {
         final Long userId = UserContext.getContext();
-        giftService.openGift(userId, giftId);
-        return ResponseEntity.ok(new CommonResponse<>());
-
+        final GiftDetailResponse giftDetail = giftService.getGiftDetail(userId, giftId);
+        return ResponseEntity.ok(new CommonResponse<>(giftDetail));
     }
 }
