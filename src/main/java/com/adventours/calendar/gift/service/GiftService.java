@@ -99,4 +99,12 @@ public class GiftService {
                 isMyCalendar ? giftPersonalStateRepository.countReactedCountByGiftId(gift.getId()) : null
         );
     }
+
+    @Transactional
+    public void reactGift(Long userId, Long giftId) {
+        final User user = userRepository.getReferenceById(userId);
+        final Gift gift = giftRepository.findById(giftId).orElseThrow(NotFoundGiftException::new);
+        final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, user)).orElse(new GiftPersonalState());
+        giftPersonalState.react();
+    }
 }

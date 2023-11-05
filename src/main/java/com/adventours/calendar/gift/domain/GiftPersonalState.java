@@ -33,4 +33,8 @@ public class GiftPersonalState {
     public void open() {
         this.isOpened = true;
     }
+
+    public void react() {
+        this.isReacted = true;
+    }
 }

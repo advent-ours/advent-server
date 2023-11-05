@@ -3,6 +3,8 @@ package com.adventours.calendar.gift.api;
 import com.adventours.calendar.common.Scenario;
 import io.restassured.RestAssured;
 
+import static com.adventours.calendar.common.ApiTest.accessToken;
+
 public class ReactGiftApi {
 
     private int giftId = 1;
@@ -14,6 +16,7 @@ public class ReactGiftApi {
 
     public Scenario request() {
         RestAssured.given().log().all()
+                .header("Authorization", accessToken)
                 .when()
                 .post("/calendar/{calendarId}/gift/{giftId}/react", "dummy", giftId)
                 .then()
