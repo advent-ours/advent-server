@@ -13,6 +13,7 @@ import com.adventours.calendar.global.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -75,6 +76,14 @@ public class CalendarController {
     public ResponseEntity<CommonResponse<Void>> subscribeCalendar(@PathVariable final String calendarId) {
         final Long userId = UserContext.getContext();
         calendarService.subscribe(userId, calendarId);
+        return ResponseEntity.ok(new CommonResponse<>());
+    }
+
+    @Auth
+    @DeleteMapping("/sub/{calendarId}")
+    public ResponseEntity<CommonResponse<List<SubCalendarListResponse>>> unsubscribeCalendar(@PathVariable final String calendarId) {
+        final Long userId = UserContext.getContext();
+        calendarService.unsubscribe(userId, calendarId);
         return ResponseEntity.ok(new CommonResponse<>());
     }
 }

@@ -142,4 +142,10 @@ public class CalendarService {
         }
         giftPersonalStateRepository.saveAll(giftPersonalStateList);
     }
+
+    public void unsubscribe(Long userId, String calendarId) {
+        final User user = userRepository.getReferenceById(userId);
+        final Calendar calendar = calendarRepository.getReferenceById(UUID.fromString(calendarId));
+        subscribeRepository.delete(new Subscribe(new SubscribePk(user, calendar)));
+    }
 }
