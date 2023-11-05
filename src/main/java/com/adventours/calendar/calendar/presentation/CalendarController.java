@@ -56,6 +56,14 @@ public class CalendarController {
     }
 
     @Auth
+    @DeleteMapping("/{calendarId}")
+    public ResponseEntity<CommonResponse<Void>> deleteCalendar(@PathVariable final String calendarId) {
+        final Long userId = UserContext.getContext();
+        calendarService.deleteCalendar(userId, calendarId);
+        return ResponseEntity.ok(new CommonResponse<>());
+    }
+
+    @Auth
     @GetMapping("/my")
     public ResponseEntity<CommonResponse<List<MyCalendarListResponse>>> getMyCalendarList() {
         final Long userId = UserContext.getContext();

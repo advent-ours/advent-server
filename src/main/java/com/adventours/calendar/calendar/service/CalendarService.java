@@ -148,4 +148,16 @@ public class CalendarService {
         final Calendar calendar = calendarRepository.getReferenceById(UUID.fromString(calendarId));
         subscribeRepository.delete(new Subscribe(new SubscribePk(user, calendar)));
     }
+
+    @Transactional
+    public void deleteCalendar(Long userId, String calendarId) {
+        final Calendar calendar = calendarRepository.findById(UUID.fromString(calendarId)).orElseThrow(NotFoundCalendarException::new);
+        if (!calendar.isOwner(userId)) {
+            throw new NotOwnerException();
+        }
+        //TODO: personal state도 삭제 필요
+        giftRepository.deleteAllByCalendar(calendar);
+        subscribeRepository.deleteAllByCalendar(calendar);
+        calendarRepository.delete(calendar);
+    }
 }
