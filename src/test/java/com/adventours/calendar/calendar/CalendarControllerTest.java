@@ -169,4 +169,23 @@ class CalendarControllerTest extends ApiTest {
         assertThat(calendarRepository.findById(calendar.getId()).get().getTitle()).isEqualTo("수정된 제목");
         assertThat(calendarRepository.findById(calendar.getId()).get().getTemplate()).isEqualTo(CalendarTemplate.GREEN);
     }
+
+    @Test
+    @DisplayName("캘린더 구독 취소 성공")
+    void unsubscribeCalendar() {
+        final User user = Scenario.createUserDB().id(2L).create();
+        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
+        Scenario.subscribeCalendar().calendarId(calendar.getId()).request();
+        assertThat(subscribeRepository.count()).isOne();
+
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .delete("/calendar/sub/{calendarId}", calendar.getId())
+                .then()
+                .log().all()
+                .statusCode(200);
+
+        assertThat(subscribeRepository.count()).isZero();
+    }
 }
