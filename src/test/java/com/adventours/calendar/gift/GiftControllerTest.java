@@ -84,4 +84,18 @@ class GiftControllerTest extends ApiTest {
         Scenario.subscribeCalendar().calendarId(calendar.getId()).request().
                 openGift().calendarId(calendar.getTitle()).request();
     }
+
+    @Test
+    @DisplayName("선물에 반응 보내기 성공")
+    void react_gift() {
+        final User user = userRepository.getReferenceById(1L);
+        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
+        Scenario.subscribeCalendar().calendarId(calendar.getId()).request().
+                openGift().calendarId(calendar.getTitle()).request().
+                reactGift().request();
+
+        final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findAll().get(0);
+
+        assertThat(giftPersonalState.isReacted()).isTrue();
+    }
 }

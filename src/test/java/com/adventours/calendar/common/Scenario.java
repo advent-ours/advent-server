@@ -4,6 +4,7 @@ import com.adventours.calendar.calendar.api.CreateCalendarApi;
 import com.adventours.calendar.calendar.api.CreateCalendarDB;
 import com.adventours.calendar.calendar.api.SubscribeCalendarApi;
 import com.adventours.calendar.gift.api.OpenGiftApi;
+import com.adventours.calendar.gift.api.ReactGiftApi;
 import com.adventours.calendar.gift.api.UpdateGiftApi;
 import com.adventours.calendar.user.api.CreateUserDB;
 import com.adventours.calendar.user.api.UpdateNicknameApi;
@@ -33,5 +34,9 @@ public class Scenario {
 
     public UpdateGiftApi updateGift() {
         return new UpdateGiftApi();
+    }
+
+    public ReactGiftApi reactGift() {
+        return new ReactGiftApi();
     }
 }
