@@ -4,8 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import org.hibernate.type.TrueFalseConverter;
@@ -22,9 +20,8 @@ public class GiftPersonalState {
     @Convert(converter = TrueFalseConverter.class)
     private boolean isOpened = false;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private GiftReact react = GiftReact.NONE;
+    private boolean isReacted = false;
 
     public GiftPersonalState() {
     }

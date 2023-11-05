@@ -7,7 +7,6 @@ import com.adventours.calendar.exception.NotOwnerException;
 import com.adventours.calendar.gift.domain.Gift;
 import com.adventours.calendar.gift.domain.GiftPersonalState;
 import com.adventours.calendar.gift.domain.GiftPersonalStatePk;
-import com.adventours.calendar.gift.domain.GiftReact;
 import com.adventours.calendar.gift.persistence.GiftPersonalStateRepository;
 import com.adventours.calendar.gift.persistence.GiftRepository;
 import com.adventours.calendar.user.domain.User;
@@ -65,19 +64,12 @@ public class GiftService {
         return giftList.stream().map(gift -> {
             final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(
                     new GiftPersonalStatePk(gift, user)).orElse(new GiftPersonalState());
-            final boolean isOpened = giftPersonalState.isOpened();
-            final GiftReact react = giftPersonalState.getReact();
             return new GiftListResponse(
                     gift.getId(),
                     gift.getOpenAt(),
-                    gift.getGiftType(),
-                    gift.getTitle(),
-                    gift.getTextBody(),
-                    gift.getContentUrl(),
                     gift.getCreatedAt(),
                     gift.getUpdatedAt(),
-                    isOpened,
-                    react
+                    giftPersonalState.isOpened()
             );
         }).toList();
     }
@@ -88,5 +80,27 @@ public class GiftService {
         final Gift gift = giftRepository.getReferenceById(giftId);
         final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, user)).orElseThrow();
         giftPersonalState.open();
+    }
+
+    @Transactional
+    public GiftDetailResponse getGiftDetail(Long userId, Long giftId) {
+        final User user = userRepository.getReferenceById(userId);
+        final Gift gift = giftRepository.findById(giftId).orElseThrow(NotFoundGiftException::new);
+        final boolean isMyGift = gift.getCalendar().getUser().equals(user);
+        final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, user)).orElse(new GiftPersonalState());
+        giftPersonalState.open();
+        return new GiftDetailResponse(
+                gift.getId(),
+                gift.getOpenAt(),
+                gift.getGiftType(),
+                gift.getTitle(),
+                gift.getTextBody(),
+                gift.getContentUrl(),
+                gift.getCreatedAt(),
+                gift.getUpdatedAt(),
+                isMyGift,
+                giftPersonalState.isReacted(),
+                isMyGift ? giftPersonalStateRepository.countReactedCountByGiftId(gift.getId()) : null
+        );
     }
 }
