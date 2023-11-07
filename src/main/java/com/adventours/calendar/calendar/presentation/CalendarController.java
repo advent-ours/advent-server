@@ -80,7 +80,7 @@ public class CalendarController {
     }
 
     @Auth
-    @PostMapping("/sub/{calendarId}")
+    @PostMapping("/{calendarId}/sub")
     public ResponseEntity<CommonResponse<Void>> subscribeCalendar(@PathVariable final String calendarId) {
         final Long userId = UserContext.getContext();
         calendarService.subscribe(userId, calendarId);
@@ -88,7 +88,7 @@ public class CalendarController {
     }
 
     @Auth
-    @DeleteMapping("/sub/{calendarId}")
+    @DeleteMapping("/{calendarId}/sub")
     public ResponseEntity<CommonResponse<List<SubCalendarListResponse>>> unsubscribeCalendar(@PathVariable final String calendarId) {
         final Long userId = UserContext.getContext();
         calendarService.unsubscribe(userId, calendarId);

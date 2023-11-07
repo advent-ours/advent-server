@@ -198,7 +198,7 @@ class CalendarControllerTest extends ApiTest {
         RestAssured.given().log().all()
                 .header("Authorization", accessToken)
                 .when()
-                .delete("/calendar/sub/{calendarId}", calendar.getId())
+                .delete("/calendar/{calendarId}/sub", calendar.getId())
                 .then()
                 .log().all()
                 .statusCode(200);
