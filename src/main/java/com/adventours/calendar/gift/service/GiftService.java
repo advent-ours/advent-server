@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -106,5 +108,37 @@ public class GiftService {
         final Gift gift = giftRepository.findById(giftId).orElseThrow(NotFoundGiftException::new);
         final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, user)).orElse(new GiftPersonalState());
         giftPersonalState.react();
+    }
+
+    public List<GiftListResponse> getMyGiftListSummary(Long userId, String calendarId) {
+        final Calendar calendar = calendarRepository.getReferenceById(UUID.fromString(calendarId));
+        final List<Gift> giftList = giftRepository.findByCalendar(calendar);
+        return giftList.stream()
+                .filter(gift -> gift.getTitle() != null)
+                .map(gift -> new GiftListResponse(
+                        gift.getId(),
+                        gift.getOpenAt(),
+                        gift.getCreatedAt(),
+                        gift.getUpdatedAt(),
+                        false
+                )).toList();
+    }
+
+    public List<GiftListResponse> getSubGiftListSummary(Long userId, String calendarId) {
+        final User user = userRepository.getReferenceById(userId);
+        final Calendar calendar = calendarRepository.getReferenceById(UUID.fromString(calendarId));
+        final List<Gift> giftList = giftRepository.findByCalendar(calendar);
+        final LocalDateTime today = LocalDate.now().atStartOfDay();
+        return giftList.stream().filter(gift -> gift.getOpenAt().isAfter(today)).map(gift -> {
+            final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(
+                    new GiftPersonalStatePk(gift, user)).orElse(new GiftPersonalState());
+            return new GiftListResponse(
+                    gift.getId(),
+                    gift.getOpenAt(),
+                    gift.getCreatedAt(),
+                    gift.getUpdatedAt(),
+                    giftPersonalState.isOpened()
+            );
+        }).toList();
     }
 }

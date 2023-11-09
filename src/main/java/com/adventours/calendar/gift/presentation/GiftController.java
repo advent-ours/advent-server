@@ -41,6 +41,22 @@ public class GiftController {
     }
 
     @Auth
+    @GetMapping("/calendar/{calendarId}/gift/my/summary")
+    public ResponseEntity<CommonResponse<List<GiftListResponse>>> getMyGiftListSummaryList(@PathVariable final String calendarId) {
+        final Long userId = UserContext.getContext();
+        final List<GiftListResponse> giftList = giftService.getMyGiftListSummary(userId, calendarId);
+        return ResponseEntity.ok(new CommonResponse<>(giftList));
+    }
+
+    @Auth
+    @GetMapping("/calendar/{calendarId}/gift/sub/summary")
+    public ResponseEntity<CommonResponse<List<GiftListResponse>>> getSubGiftListSummary(@PathVariable final String calendarId) {
+        final Long userId = UserContext.getContext();
+        final List<GiftListResponse> giftList = giftService.getSubGiftListSummary(userId, calendarId);
+        return ResponseEntity.ok(new CommonResponse<>(giftList));
+    }
+
+    @Auth
     @GetMapping("/calendar/{calendarId}/gift/{giftId}")
     public ResponseEntity<CommonResponse<GiftDetailResponse>> getGiftDetail(@PathVariable final String calendarId,
                                                                             @PathVariable final Long giftId) {
