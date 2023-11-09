@@ -64,6 +64,38 @@ class GiftControllerTest extends ApiTest {
     }
 
     @Test
+    @DisplayName("내가 구독한 캘린더의 선물 summary")
+    void getSubGiftListSummaryList() {
+        final User user = Scenario.createUserDB().id(2L).create();
+        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
+        Scenario.subscribeCalendar().calendarId(calendar.getId()).request();
+
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .get("/calendar/{calendarId}/gift/sub/summary", calendar.getId())
+                .then()
+                .log().all()
+                .statusCode(200);
+    }
+
+    @Test
+    @DisplayName("내가 발행한 캘린더의 선물 summary")
+    void getMyGiftListSummaryList() {
+        Scenario.createCalendar().request()
+                .updateGift().request();
+        final Calendar calendar = calendarRepository.findAll().get(0);
+
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .get("/calendar/{calendarId}/gift/my/summary", calendar.getId())
+                .then()
+                .log().all()
+                .statusCode(200);
+    }
+
+    @Test
     @DisplayName("구독한 선물 열기 성공")
     void openGift_sub() {
         final User user = Scenario.createUserDB().id(2L).create();

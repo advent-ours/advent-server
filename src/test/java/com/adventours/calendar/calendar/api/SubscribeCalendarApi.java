@@ -27,7 +27,7 @@ public class SubscribeCalendarApi {
         RestAssured.given().log().all()
                 .header("Authorization", customAccessToken)
                 .when()
-                .post("/calendar/sub/{calendarId}", calendarId)
+                .post("/calendar/{calendarId}/sub", calendarId)
                 .then()
                 .log().all()
                 .statusCode(200);
