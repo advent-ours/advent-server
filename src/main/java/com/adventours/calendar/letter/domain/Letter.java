@@ -34,12 +34,12 @@ public class Letter extends BaseTime {
     private User fromUser;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String body;
+    private String content;
 
-    public Letter(Calendar calendar, User fromUser, String body) {
+    public Letter(Calendar calendar, User fromUser, String content) {
         this.calendar = calendar;
         this.fromUser = fromUser;
-        this.body = body;
+        this.content = content;
     }
 
     public Letter() {
