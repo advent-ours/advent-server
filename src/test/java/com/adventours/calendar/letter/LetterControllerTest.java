@@ -5,8 +5,6 @@ import com.adventours.calendar.common.ApiTest;
 import com.adventours.calendar.common.Scenario;
 import com.adventours.calendar.letter.domain.LetterRepository;
 import com.adventours.calendar.user.domain.User;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +21,7 @@ class LetterControllerTest extends ApiTest {
     void createLetter() {
         final User user = Scenario.createUserDB().id(2L).create();
         final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
-        Scenario.subscribeCalendar().calendarId(calendar.getId()).request();
-
-        SendLetterRequest request = new SendLetterRequest("content");
-
-        RestAssured.given().log().all()
-                .contentType(ContentType.JSON)
-                .header("Authorization", accessToken)
-                .body(request)
-                .when()
-                .post("/calendar/{calendarId}/letter", calendar.getId())
-                .then()
-                .log().all()
-                .statusCode(200);
+        Scenario.subscribeCalendar().calendarId(calendar.getId()).request()
+                .sendLetter().calendarId(calendar.getId()).request();
     }
 }
