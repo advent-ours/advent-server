@@ -33,7 +33,15 @@ public class Letter extends BaseTime {
     @JoinColumn(name = "FROM_USER_ID", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User fromUser;
 
-    @Column(nullable = false)
-    private String body;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
 
+    public Letter(Calendar calendar, User fromUser, String content) {
+        this.calendar = calendar;
+        this.fromUser = fromUser;
+        this.content = content;
+    }
+
+    public Letter() {
+    }
 }
