@@ -33,7 +33,7 @@ public class Letter extends BaseTime {
     @JoinColumn(name = "FROM_USER_ID", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User fromUser;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String body;
 
 }
