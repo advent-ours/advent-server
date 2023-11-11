@@ -44,7 +44,7 @@ jobs:
           script: |
             sudo docker stop calendar_server
             sudo docker rm calendar_server
-            sudo docker images | grep calendar-jib | sort -k2 | awk '{if(NR>1) print $3}' | xargs docker rmi --force
+            sudo docker images | grep calendar-jib | sort -k2 | awk '{if(NR>1) print $3}' | xargs sudo docker rmi --force
             
             sudo docker pull woojin8787/calendar-jib:latest
             sudo docker rm calendar_temp
