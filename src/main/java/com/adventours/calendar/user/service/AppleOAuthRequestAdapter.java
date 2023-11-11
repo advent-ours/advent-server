@@ -41,7 +41,6 @@ public class AppleOAuthRequestAdapter implements OAuthRequestPort {
         try {
             keys = objectMapper.readValue(publicKeys, Keys.class);
 
-            System.out.println("token = " + token);
             SignedJWT signedJWT = SignedJWT.parse(token);
 
             boolean isVerified = isVerifiedToken(keys, signedJWT);

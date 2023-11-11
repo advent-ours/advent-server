@@ -30,7 +30,6 @@ public class UserController {
 
     @PostMapping("/login/oauth/{provider}")
     public ResponseEntity<CommonResponse<LoginResponse>> login(@PathVariable final String provider, @RequestBody final LoginRequest request) {
-        System.out.println("request = " + request.token());
         final LoginResponse response = userService.login(OAuthProvider.valueOf(provider), request);
         final JwtTokenDto jwtTokenDto = tokenIssuer.issueToken(response.getUserId());
         response.issueToken(jwtTokenDto);
