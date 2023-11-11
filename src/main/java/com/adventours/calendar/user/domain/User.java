@@ -29,7 +29,7 @@ public class User extends BaseTime {
     @Column(nullable = false)
     private String providerId;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String nickname = "새로운친구";
 
     private String profileImgUrl;
