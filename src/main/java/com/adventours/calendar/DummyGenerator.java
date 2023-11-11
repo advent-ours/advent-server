@@ -10,13 +10,12 @@ import com.adventours.calendar.user.domain.User;
 import com.adventours.calendar.user.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 //@Profile("dev")
-@Component
+//@Component
 @RequiredArgsConstructor
 public class DummyGenerator implements CommandLineRunner {
 
