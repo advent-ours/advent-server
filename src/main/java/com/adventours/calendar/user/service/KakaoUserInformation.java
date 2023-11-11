@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-public class KakaoUserInformation extends OAuthProviderInformation {
+public class KakaoUserInformation extends OAuthUserInformation {
     private static final OAuthProvider provider = OAuthProvider.KAKAO;
 
     @JsonProperty(value = "id")

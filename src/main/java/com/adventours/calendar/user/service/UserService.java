@@ -19,7 +19,7 @@ public class UserService {
 
     public LoginResponse login(final OAuthProvider provider, final LoginRequest request) {
         OAuthRequestPort oAuthRequestPort = getProperProviderPort(provider);
-        OAuthProviderInformation userInformation = oAuthRequestPort.requestUserInformation(request.token());
+        OAuthUserInformation userInformation = oAuthRequestPort.requestUserInformation(request.token());
         Optional<User> optionalUser = userRepository.findByProviderAndProviderId(provider, userInformation.getProviderId());
         if (optionalUser.isPresent()) {
             return new LoginResponse(optionalUser.get().getId(), false);
