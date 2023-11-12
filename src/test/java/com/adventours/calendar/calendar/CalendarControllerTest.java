@@ -19,8 +19,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,6 +45,8 @@ class CalendarControllerTest extends ApiTest {
     UserRepository userRepository;
     @Autowired
     JwtTokenIssuer jwtTokenIssuer;
+    @SpyBean
+    Clock clock;
 
     @Test
     @Disabled
@@ -259,4 +265,25 @@ class CalendarControllerTest extends ApiTest {
                 .statusCode(200);
     }
 
+    @Test
+    @DisplayName("구독 캘린더 모아보기")
+    void getSummarySubCalendarList() {
+        final User user2 = Scenario.createUserDB().id(2L).create();
+        final String user2AccessToken = jwtTokenIssuer.issueToken(user2.getId()).accessToken();
+        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user2).create();
+        Scenario.updateGift().accessToken(user2AccessToken).giftId(1L).request()
+                .updateGift().accessToken(user2AccessToken).giftId(2L).request()
+                .updateGift().accessToken(user2AccessToken).giftId(3L).request();
+
+
+        BDDMockito.given(clock.instant())
+                .willReturn(Instant.parse("2023-12-13T00:00:00.00Z"));
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .get("/calendar/{calendarId}/gift/sub/summary", calendar.getId())
+                .then()
+                .log().all()
+                .statusCode(200);
+    }
 }

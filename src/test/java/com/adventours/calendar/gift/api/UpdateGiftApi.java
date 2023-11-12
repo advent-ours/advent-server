@@ -1,10 +1,10 @@
 package com.adventours.calendar.gift.api;
 
+import com.adventours.calendar.common.ApiTest;
+import com.adventours.calendar.common.Scenario;
 import com.adventours.calendar.gift.domain.GiftType;
 import com.adventours.calendar.gift.service.UpdateGiftRequest;
 import io.restassured.RestAssured;
-
-import static com.adventours.calendar.common.ApiTest.accessToken;
 
 public class UpdateGiftApi {
     private long calendarId = 1L;
@@ -16,6 +16,7 @@ public class UpdateGiftApi {
     private String link;
     private String uploadKey;
     private String extension;
+    private String accessToken = ApiTest.accessToken;
 
     public UpdateGiftApi calendarId(final long calendarId) {
         this.calendarId = calendarId;
@@ -57,7 +58,12 @@ public class UpdateGiftApi {
         return this;
     }
 
-    public void request() {
+    public UpdateGiftApi accessToken(final String accessToken) {
+        this.accessToken = accessToken;
+        return this;
+    }
+
+    public Scenario request() {
         final UpdateGiftRequest request = new UpdateGiftRequest(
                 giftType,
                 title,
@@ -75,5 +81,7 @@ public class UpdateGiftApi {
                 .post("/calendar/{calendarId}/gift/{giftId}", calendarId, giftId)
                 .then()
                 .statusCode(200);
+
+        return new Scenario();
     }
 }
