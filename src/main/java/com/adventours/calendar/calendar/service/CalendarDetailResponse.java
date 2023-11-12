@@ -12,6 +12,9 @@ public record CalendarDetailResponse(
         String profileImgUrl,
         String title,
         CalendarTemplate template,
+        boolean isMyCalendar,
+        Long notOpenedCount,
+        Long subscriberCount,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {

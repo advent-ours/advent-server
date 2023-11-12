@@ -162,8 +162,10 @@ public class CalendarService {
     }
 
     @Transactional(readOnly = true)
-    public CalendarDetailResponse getCalendarDetail(String calendarId) {
+    public CalendarDetailResponse getCalendarDetail(Long userId, String calendarId) {
+        final User user = userRepository.getReferenceById(userId);
         final Calendar calendar = calendarRepository.findById(UUID.fromString(calendarId)).orElseThrow(NotFoundCalendarException::new);
+        boolean isMyCalendar = calendar.isOwner(userId);
         return new CalendarDetailResponse(
                 calendar.getId(),
                 calendar.getUser().getId(),
@@ -171,8 +173,12 @@ public class CalendarService {
                 calendar.getUser().getProfileImgUrl(),
                 calendar.getTitle(),
                 calendar.getTemplate(),
+                isMyCalendar,
+                isMyCalendar ? null : giftPersonalStateRepository.countNotOpenedGift(calendar.getId(), user.getId(), LocalDateTime.now()),
+                isMyCalendar ? subscribeRepository.countByCalendar(calendar) : null,
                 calendar.getCreatedAt(),
                 calendar.getUpdatedAt()
         );
+
     }
 }
