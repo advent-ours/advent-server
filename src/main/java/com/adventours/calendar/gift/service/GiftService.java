@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +29,7 @@ public class GiftService {
     private final CalendarRepository calendarRepository;
     private final GiftPersonalStateRepository giftPersonalStateRepository;
     private final UserRepository userRepository;
+    private final Clock clock;
 
     @Value("${cloud.aws.s3.media-url}")
     private String s3MediaUrl;
@@ -130,7 +132,7 @@ public class GiftService {
         final User user = userRepository.getReferenceById(userId);
         final Calendar calendar = calendarRepository.getReferenceById(UUID.fromString(calendarId));
         final List<Gift> giftList = giftRepository.findByCalendar(calendar);
-        final LocalDateTime today = LocalDate.now().atStartOfDay();
+        final LocalDateTime today = LocalDate.now(clock).atStartOfDay();
         return giftList.stream().filter(gift -> gift.getOpenAt().isBefore(today)).map(gift -> {
             final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(
                     new GiftPersonalStatePk(gift, user)).orElse(new GiftPersonalState());

@@ -21,6 +21,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class CalendarService {
     private final UserRepository userRepository;
     private final SubscribeRepository subscribeRepository;
     private final GiftPersonalStateRepository giftPersonalStateRepository;
+    private final Clock clock;
 
     @Transactional
     public void createCalendar(final Long userId, final CreateCalendarRequest request) {
@@ -45,7 +47,7 @@ public class CalendarService {
     private void init25Gifts(final Calendar calendar) {
         //TODO: bulk Insert로 성능 개선 필요 (승현쌤 블로그나 구경가자), @batchsize로 가능할듯?
         List<Gift> gifts = new ArrayList<>(25);
-        LocalDateTime now = LocalDateTime.now()
+        LocalDateTime now = LocalDateTime.now(clock)
                 .withDayOfMonth(1)
                 .withMonth(12)
                 .withHour(0)
@@ -98,7 +100,7 @@ public class CalendarService {
     }
 
     private List<SubCalendarListResponse> createResponseWithNotOpenedGiftCount(final List<Calendar> calendarList, final User user) {
-        final LocalDateTime now = LocalDateTime.now().withHour(23).withMinute(59).withSecond(59);
+        final LocalDateTime now = LocalDateTime.now(clock).withHour(23).withMinute(59).withSecond(59);
         return calendarList.stream()
                 .map(calendar -> new SubCalendarListResponse(
                         calendar.getId(),
