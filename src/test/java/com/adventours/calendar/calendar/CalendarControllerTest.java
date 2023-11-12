@@ -83,6 +83,21 @@ class CalendarControllerTest extends ApiTest {
     }
 
     @Test
+    @DisplayName("캘린더 상세 조회 성공")
+    void getCalendarDetail() {
+        final User user = userRepository.getReferenceById(1L);
+        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
+
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .get("/calendar/{calendarId}", calendar.getId())
+                .then()
+                .log().all()
+                .statusCode(200);
+    }
+
+    @Test
     @DisplayName("나의 캘린더 목록 조회 성공")
     void getMyCalendarList() {
         Scenario.createCalendar().title("캘린더1").request()

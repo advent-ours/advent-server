@@ -3,6 +3,7 @@ package com.adventours.calendar.calendar.presentation;
 import com.adventours.calendar.auth.Auth;
 import com.adventours.calendar.auth.UserContext;
 import com.adventours.calendar.calendar.service.AwsS3Service;
+import com.adventours.calendar.calendar.service.CalendarDetailResponse;
 import com.adventours.calendar.calendar.service.CalendarService;
 import com.adventours.calendar.calendar.service.CreateCalendarRequest;
 import com.adventours.calendar.calendar.service.MyCalendarListResponse;
@@ -61,6 +62,13 @@ public class CalendarController {
         final Long userId = UserContext.getContext();
         calendarService.deleteCalendar(userId, calendarId);
         return ResponseEntity.ok(new CommonResponse<>());
+    }
+
+    @Auth
+    @GetMapping("/{calendarId}")
+    public ResponseEntity<CommonResponse<CalendarDetailResponse>> getCalendarDetail(@PathVariable final String calendarId) {
+        final CalendarDetailResponse calendarDetail = calendarService.getCalendarDetail(calendarId);
+        return ResponseEntity.ok(new CommonResponse<>(calendarDetail));
     }
 
     @Auth
