@@ -25,6 +25,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -276,8 +277,10 @@ class CalendarControllerTest extends ApiTest {
                 .updateGift().accessToken(user2AccessToken).giftId(3L).request();
 
 
+        Instant instant = Instant.now().atZone(ZoneOffset.UTC).plusHours(9)
+                .withMonth(12).withDayOfMonth(13).toInstant();
         BDDMockito.given(clock.instant())
-                .willReturn(Instant.parse("2023-12-13T00:00:00.00Z"));
+                .willReturn(instant);
         RestAssured.given().log().all()
                 .header("Authorization", accessToken)
                 .when()
