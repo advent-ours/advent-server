@@ -20,7 +20,9 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
+import java.time.Clock;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,6 +43,8 @@ class CalendarControllerTest extends ApiTest {
     UserRepository userRepository;
     @Autowired
     JwtTokenIssuer jwtTokenIssuer;
+    @SpyBean
+    Clock clock;
 
     @Test
     @Disabled
@@ -240,4 +244,5 @@ class CalendarControllerTest extends ApiTest {
 
         assertThat(subscribeRepository.count()).isZero();
     }
+
 }

@@ -33,7 +33,7 @@ public class Scenario {
         return new OpenGiftApi();
     }
 
-    public UpdateGiftApi updateGift() {
+    public static UpdateGiftApi updateGift() {
         return new UpdateGiftApi();
     }
 

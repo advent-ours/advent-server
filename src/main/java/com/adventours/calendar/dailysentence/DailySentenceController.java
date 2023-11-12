@@ -6,17 +6,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Clock;
 import java.time.LocalDate;
 
 @RestController
 @RequiredArgsConstructor
-public class CommonController {
+public class DailySentenceController {
 
     private final DailySentenceRepository dailySentenceRepository;
+    private final Clock clock;
 
     @RequestMapping("/dailysentence")
     public ResponseEntity<CommonResponse<String>> dailySentence() {
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(clock);
         LocalDate startOfService = LocalDate.of(2024, 12, 1);
         LocalDate endOfService = LocalDate.of(2024, 12, 25);
         // 2023년 12월 이전
