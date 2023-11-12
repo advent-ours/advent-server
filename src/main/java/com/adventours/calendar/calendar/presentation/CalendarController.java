@@ -67,7 +67,8 @@ public class CalendarController {
     @Auth
     @GetMapping("/{calendarId}")
     public ResponseEntity<CommonResponse<CalendarDetailResponse>> getCalendarDetail(@PathVariable final String calendarId) {
-        final CalendarDetailResponse calendarDetail = calendarService.getCalendarDetail(calendarId);
+        final Long userId = UserContext.getContext();
+        final CalendarDetailResponse calendarDetail = calendarService.getCalendarDetail(userId, calendarId);
         return ResponseEntity.ok(new CommonResponse<>(calendarDetail));
     }
 

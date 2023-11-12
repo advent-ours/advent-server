@@ -68,10 +68,11 @@ public class GiftService {
                     new GiftPersonalStatePk(gift, user)).orElse(new GiftPersonalState());
             return new GiftListResponse(
                     gift.getId(),
+                    gift.getGiftType(),
+                    giftPersonalState.isOpened(),
                     gift.getOpenAt(),
                     gift.getCreatedAt(),
-                    gift.getUpdatedAt(),
-                    giftPersonalState.isOpened()
+                    gift.getUpdatedAt()
             );
         }).toList();
     }
@@ -117,10 +118,11 @@ public class GiftService {
                 .filter(gift -> gift.getTitle() != null)
                 .map(gift -> new GiftListResponse(
                         gift.getId(),
+                        gift.getGiftType(),
+                        false,
                         gift.getOpenAt(),
                         gift.getCreatedAt(),
-                        gift.getUpdatedAt(),
-                        false
+                        gift.getUpdatedAt()
                 )).toList();
     }
 
@@ -134,10 +136,11 @@ public class GiftService {
                     new GiftPersonalStatePk(gift, user)).orElse(new GiftPersonalState());
             return new GiftListResponse(
                     gift.getId(),
+                    gift.getGiftType(),
+                    giftPersonalState.isOpened(),
                     gift.getOpenAt(),
                     gift.getCreatedAt(),
-                    gift.getUpdatedAt(),
-                    giftPersonalState.isOpened()
+                    gift.getUpdatedAt()
             );
         }).toList();
     }
