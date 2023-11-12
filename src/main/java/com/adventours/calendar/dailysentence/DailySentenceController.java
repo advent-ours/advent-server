@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @RestController
 @RequiredArgsConstructor
-public class CommonController {
+public class DailySentenceController {
 
     private final DailySentenceRepository dailySentenceRepository;
     private final Clock clock;
