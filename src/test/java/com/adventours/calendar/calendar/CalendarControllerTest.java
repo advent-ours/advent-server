@@ -83,10 +83,30 @@ class CalendarControllerTest extends ApiTest {
     }
 
     @Test
-    @DisplayName("캘린더 상세 조회 성공")
-    void getCalendarDetail() {
+    @DisplayName("내 캘린더 상세 조회 성공 - 구독자 필드 확인")
+    void getCalendarDetail_my() {
         final User user = userRepository.getReferenceById(1L);
         final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
+        final User user2 = Scenario.createUserDB().id(2L).create();
+        String user2AccessToken = jwtTokenIssuer.issueToken(user2.getId()).accessToken();
+        Scenario.subscribeCalendar().calendarId(calendar.getId()).customAccessToken(user2AccessToken).request();
+
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .get("/calendar/{calendarId}", calendar.getId())
+                .then()
+                .log().all()
+                .statusCode(200);
+    }
+
+    @Test
+    @DisplayName("구독중인 캘린더 상세 조회 성공")
+    void getCalendarDetail_sub() {
+        final User user2 = Scenario.createUserDB().id(2L).create();
+        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user2).create();
+        Scenario.subscribeCalendar().calendarId(calendar.getId()).request()
+                        .openGift().calendarId(calendar.getId().toString()).request();
 
         RestAssured.given().log().all()
                 .header("Authorization", accessToken)
