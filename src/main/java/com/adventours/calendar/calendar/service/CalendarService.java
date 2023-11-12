@@ -160,4 +160,19 @@ public class CalendarService {
         subscribeRepository.deleteAllByCalendar(calendar);
         calendarRepository.delete(calendar);
     }
+
+    @Transactional(readOnly = true)
+    public CalendarDetailResponse getCalendarDetail(String calendarId) {
+        final Calendar calendar = calendarRepository.findById(UUID.fromString(calendarId)).orElseThrow(NotFoundCalendarException::new);
+        return new CalendarDetailResponse(
+                calendar.getId(),
+                calendar.getUser().getId(),
+                calendar.getUser().getNickname(),
+                calendar.getUser().getProfileImgUrl(),
+                calendar.getTitle(),
+                calendar.getTemplate(),
+                calendar.getCreatedAt(),
+                calendar.getUpdatedAt()
+        );
+    }
 }
