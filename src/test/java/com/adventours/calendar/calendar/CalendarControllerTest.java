@@ -240,4 +240,23 @@ class CalendarControllerTest extends ApiTest {
 
         assertThat(subscribeRepository.count()).isZero();
     }
+
+    @Test
+    @DisplayName("내 캘린더 모아보기")
+    void getSummaryMyCalendarList() {
+        final User user = Scenario.createUserDB().id(1L).create();
+        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
+        Scenario.updateGift().giftId(1L).request()
+                .updateGift().giftId(2L).request()
+                .updateGift().giftId(3L).request();
+
+        RestAssured.given().log().all()
+                .header("Authorization", accessToken)
+                .when()
+                .get("/calendar/{calendarId}/gift/my/summary", calendar.getId())
+                .then()
+                .log().all()
+                .statusCode(200);
+    }
+
 }
