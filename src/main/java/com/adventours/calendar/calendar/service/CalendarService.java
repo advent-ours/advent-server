@@ -176,7 +176,7 @@ public class CalendarService {
                 calendar.getTitle(),
                 calendar.getTemplate(),
                 isMyCalendar,
-                isMyCalendar ? null : giftPersonalStateRepository.countNotOpenedGift(calendar.getId(), user.getId(), LocalDateTime.now()),
+                isMyCalendar ? null : giftPersonalStateRepository.countNotOpenedGift(calendar.getId(), user.getId(), LocalDateTime.now(clock)),
                 isMyCalendar ? subscribeRepository.countByCalendar(calendar) : null,
                 calendar.getCreatedAt(),
                 calendar.getUpdatedAt()
