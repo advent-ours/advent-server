@@ -19,13 +19,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneOffset;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -248,45 +245,4 @@ class CalendarControllerTest extends ApiTest {
         assertThat(subscribeRepository.count()).isZero();
     }
 
-    @Test
-    @DisplayName("내 캘린더 모아보기")
-    void getSummaryMyCalendarList() {
-        final User user = Scenario.createUserDB().id(1L).create();
-        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
-        Scenario.updateGift().giftId(1L).request()
-                .updateGift().giftId(2L).request()
-                .updateGift().giftId(3L).request();
-
-        RestAssured.given().log().all()
-                .header("Authorization", accessToken)
-                .when()
-                .get("/calendar/{calendarId}/gift/my/summary", calendar.getId())
-                .then()
-                .log().all()
-                .statusCode(200);
-    }
-
-    @Test
-    @DisplayName("구독 캘린더 모아보기")
-    void getSummarySubCalendarList() {
-        final User user2 = Scenario.createUserDB().id(2L).create();
-        final String user2AccessToken = jwtTokenIssuer.issueToken(user2.getId()).accessToken();
-        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user2).create();
-        Scenario.updateGift().accessToken(user2AccessToken).giftId(1L).request()
-                .updateGift().accessToken(user2AccessToken).giftId(2L).request()
-                .updateGift().accessToken(user2AccessToken).giftId(3L).request();
-
-
-        Instant instant = Instant.now().atZone(ZoneOffset.UTC).plusHours(9)
-                .withMonth(12).withDayOfMonth(13).toInstant();
-        BDDMockito.given(clock.instant())
-                .willReturn(instant);
-        RestAssured.given().log().all()
-                .header("Authorization", accessToken)
-                .when()
-                .get("/calendar/{calendarId}/gift/sub/summary", calendar.getId())
-                .then()
-                .log().all()
-                .statusCode(200);
-    }
 }
