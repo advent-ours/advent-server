@@ -5,5 +5,5 @@ public enum GiftType {
     TEXT,
     IMAGE,
     RECORD,
-    VIDEO
+    LINK
 }
