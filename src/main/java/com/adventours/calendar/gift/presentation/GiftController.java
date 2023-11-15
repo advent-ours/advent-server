@@ -24,7 +24,7 @@ public class GiftController {
 
     @Auth
     @PostMapping("/calendar/{calendarId}/gift/{giftId}")
-    public ResponseEntity<CommonResponse<Void>> updateGift(@PathVariable final Long calendarId,
+    public ResponseEntity<CommonResponse<Void>> updateGift(@PathVariable final String calendarId,
                                                            @PathVariable final Long giftId,
                                                            @RequestBody final UpdateGiftRequest request) {
         final Long userId = UserContext.getContext();
