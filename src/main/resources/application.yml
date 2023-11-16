@@ -33,3 +33,11 @@ cloud:
     s3:
       bucket: giftmediabucket
       media-url: https://giftmediabucket.s3.ap-northeast-2.amazonaws.com/
+
+client-version:
+  ios:
+    required: 0.5.0
+    latest: 1.0.0
+  aos:
+    required: 0.5.0
+    latest: 1.0.0
