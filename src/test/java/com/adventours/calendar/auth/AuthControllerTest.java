@@ -10,11 +10,12 @@ class AuthControllerTest extends ApiTest {
     @Test
     void version() {
         String os = "IOS";
+        String version = "1.0.0";
         RestAssured.given().log().all()
                 .header("Authorization", accessToken)
                 .when()
                 .queryParam("os", os)
-                .queryParam("appVersion", "1.0.0")
+                .queryParam("appVersion", version)
                 .get("/version")
                 .then()
                 .log().all()
