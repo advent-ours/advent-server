@@ -2,7 +2,6 @@ package com.adventours.calendar.auth;
 
 import com.adventours.calendar.exception.NotSupportedDeviceException;
 import com.adventours.calendar.global.CommonResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,36 +34,31 @@ public class AuthController {
 
     private UpdateRequiredState checkUpdateState(String os, String appVersion) {
         switch (os) {
-            case "IOS":
+            case "IOS" -> {
                 if (isUpdateRequired(REQUIRED_IOS_APP_VERSION, appVersion)) {
                     return UpdateRequiredState.FORCE;
-                } else if(isUpdateRequired(LATEST_IOS_APP_VERSION, appVersion)) {
+                } else if (isUpdateRequired(LATEST_IOS_APP_VERSION, appVersion)) {
                     return UpdateRequiredState.RECOMMENDED;
                 } else {
                     return UpdateRequiredState.LATEST;
                 }
-            case "AOS":
+            }
+            case "AOS" -> {
                 if (isUpdateRequired(REQUIRED_ANDROID_APP_VERSION, appVersion)) {
                     return UpdateRequiredState.FORCE;
-                } else if(isUpdateRequired(LATEST_ANDROID_APP_VERSION, appVersion)) {
+                } else if (isUpdateRequired(LATEST_ANDROID_APP_VERSION, appVersion)) {
                     return UpdateRequiredState.RECOMMENDED;
                 } else {
                     return UpdateRequiredState.LATEST;
                 }
-            default:
-                throw new NotSupportedDeviceException();
+            }
+            default -> throw new NotSupportedDeviceException();
         }
     }
 
     private boolean isUpdateRequired(String appVersion, String targetVersion) {
-        String[] appVersionSplitString = appVersion.split("\\.");
-        String[] requiredVersionSplitString = targetVersion.split("\\.");
-
-        for (int i = 0; i < 3; i++) {
-            if (Integer.parseInt(appVersionSplitString[i]) < Integer.parseInt(requiredVersionSplitString[i])) {
-                return true;
-            }
-        }
-        return false;
+        int appVersionNumber = Integer.parseInt(appVersion.replace(".", ""));
+        int targetVersionNumber = Integer.parseInt(targetVersion.replace(".", ""));
+        return appVersionNumber > targetVersionNumber;
     }
 }
