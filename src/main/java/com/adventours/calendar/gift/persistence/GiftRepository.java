@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface GiftRepository extends JpaRepository<Gift, Long> {
+public interface GiftRepository extends JpaRepository<Gift, Long>, GiftRepositoryCustom {
     List<Gift> findByCalendar(Calendar calendar);
 
     List<Gift> findAllByCalendar(Calendar calendar);

@@ -57,7 +57,7 @@ public class CalendarService {
         for (int i = 1; i <= 25; i++) {
             gifts.add(Gift.initOf(calendar, now.withDayOfMonth(i)));
         }
-        giftRepository.saveAll(gifts);
+        giftRepository.saveAllBulk(gifts);
     }
 
     private Calendar createCalendar(final CreateCalendarRequest request, final User user) {
