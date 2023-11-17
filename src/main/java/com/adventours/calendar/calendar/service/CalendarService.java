@@ -48,7 +48,6 @@ public class CalendarService {
     }
 
     private void init25Gifts(final Calendar calendar) {
-        //TODO: bulk Insert로 성능 개선 필요 (승현쌤 블로그나 구경가자), @batchsize로 가능할듯?
         List<Gift> gifts = new ArrayList<>(25);
         LocalDateTime now = LocalDateTime.now(clock)
                 .withDayOfMonth(1)
@@ -139,13 +138,12 @@ public class CalendarService {
     }
 
     private void init25PersonalStateData(final Calendar calendar, final User user) {
-        //TODO: bulk Insert로 성능 개선 필요 (승현쌤 블로그나 구경가자), @batchsize로 가능할듯?
         List<GiftPersonalState> giftPersonalStateList = new ArrayList<>(25);
         List<Gift> giftList = giftRepository.findAllByCalendar(calendar);
         for (int i = 1; i <= 25; i++) {
             giftPersonalStateList.add(new GiftPersonalState(new GiftPersonalStatePk(giftList.get(i-1), user)));
         }
-        giftPersonalStateRepository.saveAll(giftPersonalStateList);
+        giftPersonalStateRepository.saveAllBulk(giftPersonalStateList);
     }
 
     public void unsubscribe(Long userId, String calendarId) {

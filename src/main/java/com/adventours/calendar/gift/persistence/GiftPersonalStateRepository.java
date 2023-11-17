@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public interface GiftPersonalStateRepository extends JpaRepository<GiftPersonalState, GiftPersonalStatePk> {
+public interface GiftPersonalStateRepository extends JpaRepository<GiftPersonalState, GiftPersonalStatePk>, GiftPersonalStateRepositoryCustom {
     @Query(value =
             "select count(*) " +
             "from gift_personal_state ps " +
