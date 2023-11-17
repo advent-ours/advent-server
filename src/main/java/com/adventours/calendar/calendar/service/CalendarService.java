@@ -143,7 +143,7 @@ public class CalendarService {
         for (int i = 1; i <= 25; i++) {
             giftPersonalStateList.add(new GiftPersonalState(new GiftPersonalStatePk(giftList.get(i-1), user)));
         }
-        giftPersonalStateRepository.saveAllBulk(giftPersonalStateList);
+        giftPersonalStateRepository.saveAll(giftPersonalStateList);
     }
 
     public void unsubscribe(Long userId, String calendarId) {
