@@ -33,8 +33,8 @@ public class Gift extends BaseTime {
     @Column(nullable = false)
     private LocalDateTime openAt;
 
-    //TODO: Enum으로 제공
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private GiftType giftType;
 
     private String title;

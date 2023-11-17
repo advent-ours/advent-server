@@ -16,6 +16,7 @@ import com.adventours.calendar.subscribe.domain.Subscribe;
 import com.adventours.calendar.subscribe.domain.SubscribePk;
 import com.adventours.calendar.user.domain.User;
 import com.adventours.calendar.user.persistence.UserRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
@@ -36,11 +37,13 @@ public class CalendarService {
     private final SubscribeRepository subscribeRepository;
     private final GiftPersonalStateRepository giftPersonalStateRepository;
     private final Clock clock;
+    private final EntityManager em;
 
     @Transactional
     public void createCalendar(final Long userId, final CreateCalendarRequest request) {
         final User user = userRepository.getReferenceById(userId);
         final Calendar calendar = createCalendar(request, user);
+        em.flush();
         init25Gifts(calendar);
     }
 
