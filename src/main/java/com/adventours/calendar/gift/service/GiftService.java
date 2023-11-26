@@ -42,9 +42,13 @@ public class GiftService {
                 request.giftType(),
                 request.title(),
                 request.textBody(),
-                request.uploadKey() == null
+                checkUploadType(request)
                         ? gift.getContentUrl()
                         : createContentUrl(request.uploadKey(), request.extension()));
+    }
+
+    private static boolean checkUploadType(UpdateGiftRequest request) {
+        return request.uploadKey() == null || request.uploadKey().isEmpty();
     }
 
     private String createContentUrl(String uploadKey, String extension) {
