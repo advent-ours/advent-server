@@ -32,7 +32,7 @@ class UserControllerTest extends ApiTest {
 
     //TODO: MockBean 초기화 현상 해결 필요.
     @Test
-//    @Disabled
+    @Disabled
     @DisplayName("카카오 회원가입(로그인) 성공")
     void login_kakao() {
         //given
