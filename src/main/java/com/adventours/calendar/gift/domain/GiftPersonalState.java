@@ -37,4 +37,8 @@ public class GiftPersonalState {
     public void react() {
         this.isReacted = true;
     }
+
+    public void cancelReact() {
+        this.isReacted = false;
+    }
 }

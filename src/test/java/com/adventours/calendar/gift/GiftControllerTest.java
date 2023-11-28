@@ -154,4 +154,19 @@ class GiftControllerTest extends ApiTest {
 
         assertThat(giftPersonalState.isReacted()).isTrue();
     }
+
+    @Test
+    @DisplayName("선물에 반응 취소하기 성공")
+    void react_gift_cancel() {
+        final User user = userRepository.getReferenceById(1L);
+        final Calendar calendar = Scenario.createCalendarDB().uuid(UUID.randomUUID()).user(user).create();
+        Scenario.subscribeCalendar().calendarId(calendar.getId()).request().
+                openGift().calendarId(calendar.getTitle()).request().
+                reactGift().request()
+                .reactGift().request();
+
+        final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findAll().get(0);
+
+        assertThat(giftPersonalState.isReacted()).isFalse();
+    }
 }

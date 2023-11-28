@@ -122,7 +122,11 @@ public class GiftService {
         final User user = userRepository.getReferenceById(userId);
         final Gift gift = giftRepository.findById(giftId).orElseThrow(NotFoundGiftException::new);
         final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(new GiftPersonalStatePk(gift, user)).orElse(new GiftPersonalState());
-        giftPersonalState.react();
+        if (giftPersonalState.isReacted()) {
+            giftPersonalState.cancelReact();
+        } else {
+            giftPersonalState.react();
+        }
     }
 
     public List<GiftListResponse> getMyGiftListSummary(Long userId, String calendarId) {
