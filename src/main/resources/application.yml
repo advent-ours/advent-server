@@ -33,6 +33,7 @@ cloud:
     s3:
       bucket: giftmediabucket
       media-url: https://giftmediabucket.s3.ap-northeast-2.amazonaws.com/
+      custom-endpoint: none
 
 client-version:
   ios:
