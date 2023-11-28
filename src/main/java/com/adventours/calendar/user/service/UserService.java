@@ -22,14 +22,14 @@ public class UserService {
         OAuthUserInformation userInformation = oAuthRequestPort.requestUserInformation(request.token());
         Optional<User> optionalUser = userRepository.findByProviderAndProviderId(provider, userInformation.getProviderId());
         if (optionalUser.isPresent()) {
-            return new LoginResponse(optionalUser.get().getId(), false);
+            return new LoginResponse(optionalUser.get().getId(), optionalUser.get().getNickname(), false);
         } else {
             final User user = userRepository.save(new User(
                     provider,
                     userInformation.getProviderId(),
                     userInformation.getInitialProfileImage()
             ));
-            return new LoginResponse(user.getId(), true);
+            return new LoginResponse(user.getId(), user.getNickname(), true);
         }
     }
 
