@@ -31,6 +31,9 @@ public class GiftService {
     private final UserRepository userRepository;
     private final Clock clock;
 
+    @Value("${cloud.aws.s3.dir}")
+    private String bucketDir;
+
     @Value("${cloud.aws.s3.media-url}")
     private String s3MediaUrl;
 
@@ -60,7 +63,7 @@ public class GiftService {
     }
 
     private String createContentUrl(String uploadKey, String extension) {
-        return s3MediaUrl + uploadKey + "." + extension;
+        return s3MediaUrl + "/" + bucketDir + "/" + uploadKey + "." + extension;
     }
 
     private static void validateOwnerOfGift(final long userId, final Gift gift) {
