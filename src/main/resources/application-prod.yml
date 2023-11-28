@@ -32,3 +32,27 @@ cloud:
     s3:
       bucket: ${aws_s3_bucket}
       media-url: ${aws_s3_media_url}
+
+management:
+  endpoints:
+    prometheus:
+      enabled: true
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+            response:
+              status: true
+      sla:
+        http:
+          server:
+            requests: 100ms,150ms,250ms,500ms,1s
+            response:
+              status: 100ms,150ms,250ms,500ms,1s
+    enable:
+      jvm: true
