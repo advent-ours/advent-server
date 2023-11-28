@@ -153,7 +153,7 @@ public class GiftService {
         final List<Gift> giftList = giftRepository.findByCalendar(calendar);
         final LocalDateTime today = LocalDate.now(clock).atStartOfDay();
         return giftList.stream()
-                .filter(gift -> gift.getOpenAt().isBefore(today))
+//                .filter(gift -> gift.getOpenAt().isBefore(today))
                 .filter(gift -> gift.getTitle() != null)
                 .map(gift -> {
             final GiftPersonalState giftPersonalState = giftPersonalStateRepository.findById(
