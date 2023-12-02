@@ -59,6 +59,5 @@ management:
     enable:
       jvm: true
 
-service:
-  team-calendar:
-    calendar-id: ${service_team_calendar_id}
+app:
+  default-calendar-id: ${default_calendar_id}

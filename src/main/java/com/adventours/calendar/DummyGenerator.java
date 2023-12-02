@@ -10,6 +10,7 @@ import com.adventours.calendar.user.domain.OAuthProvider;
 import com.adventours.calendar.user.domain.User;
 import com.adventours.calendar.user.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,9 @@ public class DummyGenerator implements CommandLineRunner {
     private final CalendarRepository calendarRepository;
     private final CalendarService calendarService;
     private final DailySentenceRepository dailySentenceRepository;
+
+    @Value("${app.default-calendar-id")
+    private String defaultCalendarId;
 
     @Override
     @Transactional
@@ -45,7 +49,7 @@ public class DummyGenerator implements CommandLineRunner {
 
         Calendar calendar = calendarRepository.save(
                 new Calendar(
-                        UUID.fromString("e39fca26-a97a-4adc-acb4-db82e158c967"),
+                        UUID.fromString(defaultCalendarId),
                         user,
                         "HBD팀이 말아주는 크리스마스 캘린더",
                         CalendarTemplate.GREEN

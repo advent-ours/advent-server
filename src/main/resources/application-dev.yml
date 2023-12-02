@@ -35,6 +35,5 @@ cloud:
       custom-endpoint: ${aws_s3_custom_endpoint}
       dir: ${aws_s3_dir}
 
-service:
-  team-calendar:
-    calendar-id: ${service_team_calendar_id}
+app:
+  default-calendar-id: ${default_calendar_id}

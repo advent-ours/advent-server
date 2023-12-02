@@ -1,10 +1,12 @@
 package com.adventours.calendar.user.service;
 
+import com.adventours.calendar.calendar.service.CalendarService;
 import com.adventours.calendar.exception.NotFoundUserException;
 import com.adventours.calendar.user.domain.OAuthProvider;
 import com.adventours.calendar.user.domain.User;
 import com.adventours.calendar.user.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,10 @@ import java.util.Optional;
 public class UserService {
     private final Map<OAuthProvider, OAuthRequestPort> oAuthRequestPortMap;
     private final UserRepository userRepository;
+    private final CalendarService calendarService;
+
+    @Value("${app.default-calendar-id")
+    private String defaultCalendarId;
 
     public LoginResponse login(final OAuthProvider provider, final LoginRequest request) {
         OAuthRequestPort oAuthRequestPort = getProperProviderPort(provider);
@@ -29,6 +35,7 @@ public class UserService {
                     userInformation.getProviderId(),
                     userInformation.getInitialProfileImage()
             ));
+            calendarService.subscribe(user.getId(), defaultCalendarId);
             return new LoginResponse(user.getId(), user.getNickname(), true);
         }
     }
