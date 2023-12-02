@@ -58,3 +58,7 @@ management:
               status: 100ms,150ms,250ms,500ms,1s
     enable:
       jvm: true
+
+service:
+  team-calendar:
+    calendar-id: ${service_team_calendar_id}

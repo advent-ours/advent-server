@@ -44,7 +44,7 @@ public class CalendarService {
         init25Gifts(calendar);
     }
 
-    private void init25Gifts(final Calendar calendar) {
+    public void init25Gifts(final Calendar calendar) {
         //TODO: bulk Insert로 성능 개선 필요 (승현쌤 블로그나 구경가자), @batchsize로 가능할듯?
         List<Gift> gifts = new ArrayList<>(25);
         LocalDateTime now = LocalDateTime.now(clock)
