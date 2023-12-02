@@ -20,7 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final CalendarService calendarService;
 
-    @Value("${app.default-calendar-id")
+    @Value("${app.default-calendar-id}")
     private String defaultCalendarId;
 
     public LoginResponse login(final OAuthProvider provider, final LoginRequest request) {

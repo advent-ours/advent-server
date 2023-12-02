@@ -28,7 +28,7 @@ public class DummyGenerator implements CommandLineRunner {
     private final CalendarService calendarService;
     private final DailySentenceRepository dailySentenceRepository;
 
-    @Value("${app.default-calendar-id")
+    @Value("${app.default-calendar-id}")
     private String defaultCalendarId;
 
     @Override
