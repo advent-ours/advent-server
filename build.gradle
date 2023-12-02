@@ -63,7 +63,22 @@ jib {
 		image = 'amazoncorretto:17.0.7'
 	}
 	to {
-		image = "woojin8787/calendar-jib"
+		image = "woojin8787/calendar-jib-dev"
+		tags = ["latest"]
+	}
+	container {
+		creationTime = 'USE_CURRENT_TIMESTAMP'
+		jvmFlags = ['-Dspring.profiles.active=dev', '-XX:+UseContainerSupport', '-Dserver.port=8080', '-Dfile.encoding=UTF-8']
+		ports = ['8080']
+	}
+}
+
+jib {
+	from {
+		image = 'amazoncorretto:17.0.7'
+	}
+	to {
+		image = "woojin8787/calendar-jib-prod"
 		tags = ["latest"]
 	}
 	container {

@@ -33,6 +33,7 @@ cloud:
       bucket: ${aws_s3_bucket}
       media-url: ${aws_s3_media_url}
       custom-endpoint: ${aws_s3_custom_endpoint}
+      dir: ${aws_s3_dir}
 
 management:
   endpoints:
