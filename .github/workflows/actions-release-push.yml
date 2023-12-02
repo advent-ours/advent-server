@@ -2,7 +2,7 @@ name: CI/CD-workflow
 
 on:
   push:
-    branches: ["qa"]
+    branches: ["release"]
 
 jobs:
   build:
@@ -37,18 +37,18 @@ jobs:
       - name: Deploy AWS Server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.DEV_SERVER_HOST }}
-          username: ${{ secrets.DEV_SERVER_USERNAME }}
-          key: ${{ secrets.DEV_SSH_KEY }}
-          port: ${{ secrets.DEV_SERVER_PORT }}
+          host: ${{ secrets.RELEASE_SERVER_HOST }}
+          username: ${{ secrets.RELEASE_SERVER_USERNAME }}
+          key: ${{ secrets.RELEASE_SSH_KEY }}
+          port: ${{ secrets.RELEASE_SERVER_PORT }}
           script: |
             sudo docker stop calendar_server
             sudo docker rm calendar_server
-            sudo docker images | grep calendar-jib-dev | sort -k2 | awk '{if(NR>1) print $3}' | xargs sudo docker rmi --force
+            sudo docker images | grep calendar-jib-prod | sort -k2 | awk '{if(NR>1) print $3}' | xargs sudo docker rmi --force
             
-            sudo docker pull woojin8787/calendar-jib-dev:latest
+            sudo docker pull woojin8787/calendar-jib-prod:latest
             sudo docker rm calendar_temp
-            sudo docker create --name calendar_temp -v /app woojin8787/calendar-jib-dev:latest
+            sudo docker create --name calendar_temp -v /app woojin8787/calendar-jib-prod:latest
             
-            sudo docker run -d --name calendar_server -v /home/ubuntu/logs:/logs -e USE_PROFILE=dev -e TZ=Asia/Seoul \
-            --network host --env-file /home/ubuntu/app/dev.env --volumes-from calendar_temp woojin8787/calendar-jib-dev:latest
+            sudo docker run -d --name calendar_server -v /home/ubuntu/logs:/logs -e USE_PROFILE=prod -e TZ=Asia/Seoul \
+            --network host --env-file /home/ubuntu/app/prod.env --volumes-from calendar_temp woojin8787/calendar-jib-prod:latest
