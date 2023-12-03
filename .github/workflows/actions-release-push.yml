@@ -52,4 +52,4 @@ jobs:
             sudo docker create --name calendar_temp -v /app woojin8787/calendar-jib-prod:latest
             
             sudo docker run -d --name calendar_server -v /home/ubuntu/logs:/logs -e USE_PROFILE=prod -e TZ=Asia/Seoul \
-            --network host --env-file /home/ubuntu/app/prod.env --volumes-from calendar_temp woojin8787/calendar-jib-prod:latest
+            --network host --env-file /root/app/prod.env --volumes-from calendar_temp woojin8787/calendar-jib-prod:latest
