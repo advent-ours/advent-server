@@ -63,7 +63,7 @@ jib {
 		image = 'amazoncorretto:17.0.7'
 	}
 	to {
-		image = "woojin8787/calendar-jib-dev"
+		image = "woojin8787/calendar-jib"
 		tags = ["latest"]
 	}
 	container {
