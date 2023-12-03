@@ -27,7 +27,7 @@ public class DailySentenceController {
         } else if (today.isAfter(endOfService)) {
             return ResponseEntity.ok(new CommonResponse<>("다음 크리스마스에 또 만나요."));
         } else {
-            long day = today.getDayOfYear();
+            long day = today.getDayOfMonth();
             DailySentence dailySentence = dailySentenceRepository.findById(day).get();
             return ResponseEntity.ok(new CommonResponse<>(dailySentence.getSentence()));
         }
