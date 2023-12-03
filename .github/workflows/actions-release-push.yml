@@ -39,6 +39,7 @@ jobs:
         with:
           host: ${{ secrets.RELEASE_SERVER_HOST }}
           username: ${{ secrets.RELEASE_SERVER_USERNAME }}
+          password: ${{ secrets.RELEASE_SERVER_PASSWORD }}
           key: ${{ secrets.RELEASE_SSH_KEY }}
           port: ${{ secrets.RELEASE_SERVER_PORT }}
           script: |
